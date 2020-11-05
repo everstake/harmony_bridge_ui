@@ -14,11 +14,12 @@ export function PickWallet() {
     const handleChange = async (what) => {
         const harmony = await getHarmony(what);
         if (harmony) {
-            setHarmony(harmony);
-            setCurrentWallet(what);
+            console.log('harmony>>>>', harmony);
             const account = await harmony.login();
             console.log('account', account);
             setAccount(account.address);
+            setHarmony(harmony);
+            setCurrentWallet(what);
         }
     };
 

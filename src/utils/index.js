@@ -25,14 +25,14 @@ export async function getHarmony(what) {
 
     if (wallet === "Harmony") {
         hmyEx = await new HarmonyExtension(window.onewallet);
-        hmyEx.provider = new Provider(config.endpoint).provider;
+        // hmyEx.provider = new Provider(config.endpoint).provider;
 
-        hmyEx.messenger = new Messenger(hmyEx.provider, ChainType.Harmony, config.chainID);
-        hmyEx.setShardID(config.shard);
-        hmyEx.wallet.messenger = hmyEx.messenger;
-        hmyEx.blockchain.messenger = hmyEx.messenger;
-        hmyEx.transactions.messenger = hmyEx.messenger;
-        hmyEx.contracts.wallet = hmyEx.wallet;
+        // hmyEx.messenger = new Messenger(hmyEx.provider, ChainType.Harmony, config.chainID);
+        // hmyEx.setShardID(config.shard);
+        // hmyEx.wallet.messenger = hmyEx.messenger;
+        // hmyEx.blockchain.messenger = hmyEx.messenger;
+        // hmyEx.transactions.messenger = hmyEx.messenger;
+        // hmyEx.contracts.wallet = hmyEx.wallet;
     }
 
     return hmyEx

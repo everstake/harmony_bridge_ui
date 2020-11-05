@@ -5,20 +5,24 @@ import {PickWallet} from "./PickWallet";
 export const AppContext = createContext({});
 
 function App() {
-    const [balance, setBalance] = useState(0);
-    const [account, setAccount] = useState("");
+    const [balance, setBalance] = useState("");
+    const [account, setAccount] = useState(null);
     const [harmony, setHarmony] = useState(null);
 
     const onWalletChanged = async () => {
-        if(!harmony) {
+        console.log('onWalletChanged', account, harmony);
+        if(!harmony || !account) {
             return
         }
-        // const balance = await harmony.blockchain.getBalance({
-        //     address: account,
-        //     shardID: 0,
-        // }).then((r) => r.result).catch(() => "error");
-        // setBalance(harmony.utils.to(harmony.utils.hexToBN(balance).toString()));
+        const balance = await harmony.blockchain.getBalance({
+            address: account,
+            shardID: 0,
+        }).then((r) => r).catch(() => "error");
+        console.log('balance', balance);
+        setBalance(harmony.utils.hexToBN(balance.result).toString());
     };
+
+    React.useEffect(onWalletChanged, [account, harmony]);
 
     // {
     //     "type": "contract deploy",
@@ -32,14 +36,12 @@ function App() {
     // }
     // }
 
+    console.log('render', account, harmony);
     const contextValues = {
         harmony,
-        setHarmony: (what) => {
-            setHarmony(what);
-            onWalletChanged().catch();
-        },
+        setHarmony,
+        setAccount,
         account,
-        setAccount
     };
 
     console.log('harmony', harmony);
