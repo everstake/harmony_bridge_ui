@@ -24,7 +24,7 @@ export function PickWallet() {
             if (list.length) {
                 await handleChange(list[0]);
             } else {
-                setTimeout(getWallets, 1000);
+                setTimeout(getWallets, 3000);
             }
         };
         getWallets().catch();

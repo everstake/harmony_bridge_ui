@@ -6,26 +6,9 @@ export const AppContext = createContext({});
 
 function App() {
     const [balance, setBalance] = useState(0);
-    const [harmony, setHarmony] = useState(0);
+    const [harmony, setHarmony] = useState(null);
 
     const handleUpdateBalance = async () => {
-        // const {Harmony} = require('@harmony-js/core');
-        // const {ChainID, ChainType} = require('@harmony-js/utils');
-
-        // const harmony = new Harmony('wss://ws.s0.b.hmny.io', {
-        //     chainUrl: 'wss://ws.s0.b.hmny.io',
-        //     chainId: ChainID.Default,
-        //     chainType: ChainType.Harmony,
-        // });
-        // const harmony = new Harmony('https://api.s0.b.hmny.io', {
-        //     chainUrl: 'https://api.s0.b.hmny.io',
-        //     chainId: ChainID.Default,
-        //     chainType: ChainType.Harmony,
-        // });
-
-        console.log('harmony', harmony);
-
-
         const balance = await harmony.blockchain.getBalance({
             address: "one170h7vcj2gmxsdtc9m6sa6d482mhpsmqd69ejv8",
             shardID: 0,
@@ -46,8 +29,15 @@ function App() {
     // }
     // }
 
+    const contextValues = {
+        harmony,
+        setHarmony,
+    };
+
+    console.log('harmony', harmony);
+
     return (
-        <AppContext.Provider value={{harmony, setHarmony}}>
+        <AppContext.Provider value={contextValues}>
             <div className="App" style={{backgroundColor: "#9a9", height: "100vh"}}>
                 <div className="Header">
                     <PickWallet/>

@@ -1,12 +1,17 @@
 import {HarmonyExtension} from "@harmony-js/core";
 import {Messenger, Provider} from "@harmony-js/network";
+
 const {ChainID, ChainType} = require('@harmony-js/utils');
 
 const config = require("../config");
 
-export async function getHarmony(wallet) {
+export async function getHarmony(what) {
     let ext = null;
-    if (window.harmony || wallet === "MathWallet") {
+    let wallet = what;
+    if (wallet !== "MathWallet" && wallet !== "Harmony" && getWalletsList().length > 0) {
+        wallet = getWalletsList().pop();
+    }
+    if (wallet === "MathWallet") {
         ext = await new HarmonyExtension(window.harmony);
         ext.provider = new Provider(config.endpoint).provider;
 
@@ -18,7 +23,7 @@ export async function getHarmony(wallet) {
         ext.contracts.wallet = ext.wallet;
     }
 
-    if (!ext && (window.onewallet || wallet === "Harmony")) {
+    if (wallet === "Harmony") {
         ext = await new HarmonyExtension(window.onewallet);
         ext.provider = new Provider(config.endpoint).provider;
 
