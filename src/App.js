@@ -1,6 +1,7 @@
 import './App.css';
 import React, {useState, createContext} from "react";
 import {PickWallet} from "./PickWallet";
+import {TestContract} from "./TestContract";
 
 export const AppContext = createContext({});
 
@@ -24,19 +25,6 @@ function App() {
 
     React.useEffect(onWalletChanged, [account, harmony]);
 
-    // {
-    //     "type": "contract deploy",
-    //     "tx": "0x4210cccd3efb16652850a0caefdfa60ba11e1ff507fc69e5fc4e0f26ab78ab26",
-    //     "sender": "one1sjfqedsznhgzwf589tw2gvv56yne4vcjre4mnx",
-    //     "contract": {
-    //     "status": "deployed",
-    //         "filename": "browser/Untitled.sol",
-    //         "contractName": "Bridge",
-    //         "address": "one1q3ee9usepm6p0f2jaygt7drh4z5d4ana6h4nql"
-    // }
-    // }
-
-    console.log('render', account, harmony);
     const contextValues = {
         harmony,
         setHarmony,
@@ -45,6 +33,7 @@ function App() {
     };
 
     console.log('harmony', harmony);
+    window.hrm = harmony;
 
     return (
         <AppContext.Provider value={contextValues}>
@@ -54,6 +43,10 @@ function App() {
                     <span>Address {account}</span>
                     <span>Balance {balance}</span>
                 </div>
+
+                <br/>
+
+                <TestContract/>
             </div>
         </AppContext.Provider>
     );
