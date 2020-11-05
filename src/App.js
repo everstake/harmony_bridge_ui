@@ -2,20 +2,21 @@ import './App.css';
 import React, {useState, createContext} from "react";
 import {PickWallet} from "./PickWallet";
 
-export const AppContext = createContext({harmony: null});
+export const AppContext = createContext({});
 
 function App() {
     const [balance, setBalance] = useState(0);
+    const [harmony, setHarmony] = useState(0);
 
     const handleUpdateBalance = async () => {
-        const {Harmony} = require('@harmony-js/core');
-        const {ChainID, ChainType} = require('@harmony-js/utils');
+        // const {Harmony} = require('@harmony-js/core');
+        // const {ChainID, ChainType} = require('@harmony-js/utils');
 
-        const harmony = new Harmony('wss://ws.s0.b.hmny.io', {
-            chainUrl: 'wss://ws.s0.b.hmny.io',
-            chainId: ChainID.Default,
-            chainType: ChainType.Harmony,
-        });
+        // const harmony = new Harmony('wss://ws.s0.b.hmny.io', {
+        //     chainUrl: 'wss://ws.s0.b.hmny.io',
+        //     chainId: ChainID.Default,
+        //     chainType: ChainType.Harmony,
+        // });
         // const harmony = new Harmony('https://api.s0.b.hmny.io', {
         //     chainUrl: 'https://api.s0.b.hmny.io',
         //     chainId: ChainID.Default,
@@ -46,11 +47,10 @@ function App() {
     // }
 
     return (
-        <AppContext.Provider>
+        <AppContext.Provider value={{harmony, setHarmony}}>
             <div className="App" style={{backgroundColor: "#9a9", height: "100vh"}}>
                 <div className="Header">
                     <PickWallet/>
-
                     <span>Balance {balance}</span>
                     <button onClick={handleUpdateBalance}>
                         update balance

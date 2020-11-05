@@ -1,14 +1,20 @@
-import React, {useEffect, useState} from "react";
-import {getWalletsList} from "./utils";
+import React, {useContext, useEffect, useState} from "react";
+import {getHarmony, getWalletsList} from "./utils";
 import { Combobox } from 'react-widgets'
 import 'react-widgets/dist/css/react-widgets.css';
+import {AppContext} from "./App";
 
 export function PickWallet() {
     const [wallets, setWallets] = useState([]);
     const [currentWallet, setCurrentWallet] = useState("");
+    const {setHarmony} = useContext(AppContext);
 
     const handleChange = async (what) => {
-        setCurrentWallet(what);
+        const harmony = await getHarmony(what);
+        if (harmony) {
+            setHarmony(harmony);
+            setCurrentWallet(what);
+        }
     };
 
     useEffect(() => {
