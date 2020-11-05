@@ -6,15 +6,18 @@ export const AppContext = createContext({});
 
 function App() {
     const [balance, setBalance] = useState(0);
+    const [account, setAccount] = useState("");
     const [harmony, setHarmony] = useState(null);
 
-    const handleUpdateBalance = async () => {
-        const balance = await harmony.blockchain.getBalance({
-            address: "one170h7vcj2gmxsdtc9m6sa6d482mhpsmqd69ejv8",
-            shardID: 0,
-        }).then((r) => r.result).catch(() => "error");
-        console.log(balance);
-        setBalance(harmony.utils.hexToBN(balance).toString());
+    const onWalletChanged = async () => {
+        if(!harmony) {
+            return
+        }
+        // const balance = await harmony.blockchain.getBalance({
+        //     address: account,
+        //     shardID: 0,
+        // }).then((r) => r.result).catch(() => "error");
+        // setBalance(harmony.utils.to(harmony.utils.hexToBN(balance).toString()));
     };
 
     // {
@@ -31,7 +34,12 @@ function App() {
 
     const contextValues = {
         harmony,
-        setHarmony,
+        setHarmony: (what) => {
+            setHarmony(what);
+            onWalletChanged().catch();
+        },
+        account,
+        setAccount
     };
 
     console.log('harmony', harmony);
@@ -41,10 +49,8 @@ function App() {
             <div className="App" style={{backgroundColor: "#9a9", height: "100vh"}}>
                 <div className="Header">
                     <PickWallet/>
+                    <span>Address {account}</span>
                     <span>Balance {balance}</span>
-                    <button onClick={handleUpdateBalance}>
-                        update balance
-                    </button>
                 </div>
             </div>
         </AppContext.Provider>

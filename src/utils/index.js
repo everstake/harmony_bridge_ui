@@ -6,36 +6,36 @@ const {ChainID, ChainType} = require('@harmony-js/utils');
 const config = require("../config");
 
 export async function getHarmony(what) {
-    let ext = null;
+    let hmyEx = null;
     let wallet = what;
     if (wallet !== "MathWallet" && wallet !== "Harmony" && getWalletsList().length > 0) {
         wallet = getWalletsList().pop();
     }
     if (wallet === "MathWallet") {
-        ext = await new HarmonyExtension(window.harmony);
-        ext.provider = new Provider(config.endpoint).provider;
+        hmyEx = await new HarmonyExtension(window.harmony);
+        hmyEx.provider = new Provider(config.endpoint).provider;
 
-        ext.messenger = new Messenger(ext.provider, ChainType.Harmony, config.chainID);
-        ext.setShardID(config.shard);
-        ext.wallet.messenger = ext.messenger;
-        ext.blockchain.messenger = ext.messenger;
-        ext.transactions.messenger = ext.messenger;
-        ext.contracts.wallet = ext.wallet;
+        hmyEx.messenger = new Messenger(hmyEx.provider, ChainType.Harmony, config.chainID);
+        hmyEx.setShardID(config.shard);
+        hmyEx.wallet.messenger = hmyEx.messenger;
+        hmyEx.blockchain.messenger = hmyEx.messenger;
+        hmyEx.transactions.messenger = hmyEx.messenger;
+        hmyEx.contracts.wallet = hmyEx.wallet;
     }
 
     if (wallet === "Harmony") {
-        ext = await new HarmonyExtension(window.onewallet);
-        ext.provider = new Provider(config.endpoint).provider;
+        hmyEx = await new HarmonyExtension(window.onewallet);
+        hmyEx.provider = new Provider(config.endpoint).provider;
 
-        ext.messenger = new Messenger(ext.provider, ChainType.Harmony, config.chainID);
-        ext.setShardID(config.shard);
-        ext.wallet.messenger = ext.messenger;
-        ext.blockchain.messenger = ext.messenger;
-        ext.transactions.messenger = ext.messenger;
-        ext.contracts.wallet = ext.wallet;
+        hmyEx.messenger = new Messenger(hmyEx.provider, ChainType.Harmony, config.chainID);
+        hmyEx.setShardID(config.shard);
+        hmyEx.wallet.messenger = hmyEx.messenger;
+        hmyEx.blockchain.messenger = hmyEx.messenger;
+        hmyEx.transactions.messenger = hmyEx.messenger;
+        hmyEx.contracts.wallet = hmyEx.wallet;
     }
 
-    return ext
+    return hmyEx
 }
 
 export function getWalletsList() {
