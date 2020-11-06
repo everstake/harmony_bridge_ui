@@ -34,7 +34,7 @@ export function TestContract() {
         await bridge.methods.setFee(inputFee).send({
             from: account,
             gas: 8000000,
-            gasPrice: 0x3b9aca00
+            gasPrice: 10000000000
         });
         {
             const tx = await harmony.blockchain.getTransactionReceipt({
@@ -50,7 +50,9 @@ export function TestContract() {
         }
     };
 
-    return <div>
+    return <div style={{backgroundColor: "#aac", padding: "100px"}}>
+        <span>Test tx</span>
+        <br/>
         <button onClick={refreshInfo}>
             get info from contract
         </button>

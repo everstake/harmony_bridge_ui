@@ -37,15 +37,12 @@
   }
 }
 
-
-
 .Header {
   display: flex;
   flex-direction: row;
   width: 100vw;
   justify-content: space-between;
 }
-
 
 .PickWallet {
   margin: 10px;
@@ -54,6 +51,14 @@
   justify-content: space-around;
   width: 200px;
   height: 100px;
+}
+
+.PickWalletContent {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  margin-inside: 10px;
+  margin-top: 30px;
 }
 
 .PickWalletNone {

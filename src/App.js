@@ -28,8 +28,8 @@ function App() {
     const contextValues = {
         harmony,
         setHarmony,
-        setAccount,
         account,
+        setAccount,
     };
 
     console.log('harmony', harmony);
