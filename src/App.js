@@ -2,8 +2,10 @@ import './App.css';
 import React, {useState, createContext} from "react";
 import {PickWallet} from "./PickWallet";
 import {TestContract} from "./TestContract";
+import {Swap} from "./Swap";
 
 export const AppContext = createContext({});
+const config = require("./config");
 
 function App() {
     const [balance, setBalance] = useState("");
@@ -12,7 +14,7 @@ function App() {
 
     const onWalletChanged = async () => {
         console.log('onWalletChanged', account, harmony);
-        if(!harmony || !account) {
+        if (!harmony || !account) {
             return
         }
         const balance = await harmony.blockchain.getBalance({
@@ -32,7 +34,6 @@ function App() {
         setAccount,
     };
 
-    console.log('harmony', harmony);
     window.hrm = harmony;
 
     return (
@@ -41,12 +42,15 @@ function App() {
                 <div className="Header">
                     <PickWallet/>
                     <span>Address {account}</span>
-                    <span>Balance {balance}</span>
+                    {account ? <span>Balance {balance}</span> : ""}
                 </div>
-
                 <br/>
-
-                <TestContract/>
+                {account ? <div>
+                    {
+                        config.tokens.map(t => <Swap key={t} assetID={t}/>)
+                    }
+                </div> : ""}
+                {account ? <TestContract/> : ""}
             </div>
         </AppContext.Provider>
     );

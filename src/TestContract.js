@@ -36,18 +36,6 @@ export function TestContract() {
             gas: 8000000,
             gasPrice: 10000000000
         });
-        {
-            const tx = await harmony.blockchain.getTransactionReceipt({
-                txnHash: '0xb7763bc58b624246742a30908051503e357e828c07a35dc9cfc93ae85cde31c4'
-            });
-            console.log('tx', tx);
-        }
-        {
-            const tx = await harmony.blockchain.getTransactionReceipt({
-                txnHash: '0x1b573090e4aff7b889383663f327f9900674121b81eb4e8f8959166ed6113c9c'
-            });
-            console.log('tx', tx);
-        }
     };
 
     return <div style={{backgroundColor: "#aac", padding: "100px"}}>
