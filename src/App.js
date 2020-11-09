@@ -1,8 +1,10 @@
 import './App.css';
 import React, {useState, createContext} from "react";
 import {PickWallet} from "./PickWallet";
-import {TestContract} from "./TestContract";
 import {Swap} from "./Swap";
+import {Select} from "antd";
+
+const {Option} = Select;
 
 export const AppContext = createContext({});
 const config = require("./config");
@@ -11,8 +13,13 @@ function App() {
     const [balance, setBalance] = useState("");
     const [account, setAccount] = useState(null);
     const [harmony, setHarmony] = useState(null);
+    const [currentAsset, setCurrentAsset] = useState("Harmony");
+    const assets = [
+        "Harmony",
+        ...config.tokens
+    ];
 
-    const onWalletChanged = async () => {
+    const updateBalance = async () => {
         console.log('onWalletChanged', account, harmony);
         if (!harmony || !account) {
             return
@@ -21,8 +28,15 @@ function App() {
             address: account,
             shardID: 0,
         }).then((r) => r).catch(() => "error");
-        console.log('balance', balance);
         setBalance(harmony.utils.hexToBN(balance.result).toString());
+    };
+
+    const onWalletChanged = async () => {
+        console.log('onWalletChanged', account, harmony);
+        if (!harmony || !account) {
+            return
+        }
+        await updateBalance();
     };
 
     React.useEffect(onWalletChanged, [account, harmony]);
@@ -32,6 +46,7 @@ function App() {
         setHarmony,
         account,
         setAccount,
+        updateBalance,
     };
 
     window.hrm = harmony;
@@ -45,12 +60,18 @@ function App() {
                     {account ? <span>Balance {balance}</span> : ""}
                 </div>
                 <br/>
-                {account ? <div>
-                    {
-                        config.tokens.map(t => <Swap key={t} assetID={t}/>)
-                    }
-                </div> : ""}
-                {account ? <TestContract/> : ""}
+
+                {
+                    account ? (
+                        <div>
+                            <span>Pick asset:</span>
+                            <Select value={currentAsset} onChange={setCurrentAsset}>
+                                {assets.map(v => <Option key={v} value={v}>{v}</Option>)}
+                            </Select>
+                            <Swap assetID={currentAsset}/>
+                        </div>
+                    ) : ""
+                }
             </div>
         </AppContext.Provider>
     );

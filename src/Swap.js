@@ -7,20 +7,25 @@ const Token = require("./contracts/EdgewareToken");
 
 export function Swap({assetID}) {
     const [balance, setBalance] = useState("");
-    const [receiver, setReceiver] = useState("");
+    const [receiver, setReceiver] = useState("one1swpff8afhyyc2yds6z7v2mk8vr5am5gkupgnh4");
     const [assetName, setAssetName] = useState("");
     const [inputValue, setInputValue] = useState(0);
-    const {harmony, account} = useContext(AppContext);
+    const {harmony, account, updateBalance} = useContext(AppContext);
 
     const refreshInfo = async () => {
         if (!harmony) {
             return;
         }
-        const token = harmony.contracts.createContract(Token.abi, assetID);
-        const balanceResult = await token.methods.balanceOf(account).call();
-        setBalance(balanceResult.toString());
-        const nameResult = await token.methods.name().call();
-        setAssetName(nameResult);
+        if (assetID === "Harmony") {
+            setAssetName("Harmony");
+        } else {
+            const token = harmony.contracts.createContract(Token.abi, assetID);
+            const balanceResult = await token.methods.balanceOf(account).call();
+            setBalance(balanceResult.toString());
+            const nameResult = await token.methods.name().call();
+            setAssetName(nameResult);
+        }
+        await updateBalance();
     };
 
     useEffect(() => {
@@ -35,7 +40,7 @@ export function Swap({assetID}) {
         setInputValue(event.target.value);
     };
 
-    const handleTransfer = async () => {
+    const handleTransferToken = async () => {
         if (!harmony) {
             return;
         }
@@ -44,6 +49,21 @@ export function Swap({assetID}) {
             from: account,
             gasLimit: 8000000,
             gasPrice: 1000000000
+        });
+
+        refreshInfo().catch();
+    };
+
+    const handleTransferCoin = async () => {
+        if (!harmony) {
+            return;
+        }
+        const bridge = await harmony.contracts.createContract(Bridge.abi, config.bridge);
+        await bridge.methods.transferCoin(receiver).send({
+            from: account,
+            gasLimit: 8000000,
+            gasPrice: 1000000000,
+            value: inputValue
         });
 
         refreshInfo().catch();
@@ -58,7 +78,7 @@ export function Swap({assetID}) {
         <span>Token {assetName}({assetID})</span>
         <br/>
 
-        <span>balance {balance}</span>
+        {assetID === "Harmony" ? "" : <span>token balance {balance}</span>}
         <br/>
 
         <div className={"SwapParams"}>
@@ -68,8 +88,8 @@ export function Swap({assetID}) {
             <span>Amount:</span>
             <input type="text" value={inputValue} onChange={onChangeTransferValue}/>
 
-            <button onClick={handleTransfer}>
-                Transfer
+            <button onClick={assetID === "Harmony" ? handleTransferCoin : handleTransferToken}>
+                {assetID === "Harmony" ? "Transfer coin" :  "Transfer token"}
             </button>
         </div>
     </div>
