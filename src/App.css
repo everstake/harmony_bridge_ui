@@ -78,3 +78,7 @@
   justify-content: space-between;
   margin-inside: 10px;
 }
+
+.ErrorLabel {
+  color: red;
+}
