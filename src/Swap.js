@@ -7,10 +7,8 @@ const Token = require("./contracts/EdgewareToken");
 
 export function Swap({assetID}) {
     const [balance, setBalance] = useState("");
-    const [allowance, setAllowance] = useState(0);
     const [receiver, setReceiver] = useState("");
     const [assetName, setAssetName] = useState("");
-    const [inputValueAllowance, setInputValueAllowance] = useState(0);
     const [inputValue, setInputValue] = useState(0);
     const {harmony, account} = useContext(AppContext);
 
@@ -23,8 +21,6 @@ export function Swap({assetID}) {
         setBalance(balanceResult.toString());
         const nameResult = await token.methods.name().call();
         setAssetName(nameResult);
-        const allowanceResult = await token.methods.allowance(account, config.bridge).call();
-        setAllowance(Number(String(allowanceResult)));
     };
 
     useEffect(() => {
@@ -37,24 +33,6 @@ export function Swap({assetID}) {
 
     const onChangeTransferValue = (event) => {
         setInputValue(event.target.value);
-    };
-
-    const onChangeAllowanceValue = (event) => {
-        setInputValueAllowance(event.target.value);
-    };
-
-    const handleAllowance = async () => {
-        if (!harmony) {
-            return;
-        }
-        const token = await harmony.contracts.createContract(Token.abi, assetID);
-        await token.methods.approve(config.bridge, inputValueAllowance).send({
-            from: account,
-            gasLimit: 8000000,
-            gasPrice: 1000000000
-        });
-
-        refreshInfo().catch();
     };
 
     const handleTransfer = async () => {
@@ -83,19 +61,7 @@ export function Swap({assetID}) {
         <span>balance {balance}</span>
         <br/>
 
-        <span className={allowance < inputValue ? "ErrorLabel" : ""}>allowance {allowance}</span>
-        <br/>
-
         <div className={"SwapParams"}>
-            <span>Allowance amount:</span>
-            <input type="text" value={inputValueAllowance} onChange={onChangeAllowanceValue}/>
-
-            <button onClick={handleAllowance}>
-                Approve spend
-            </button>
-
-            <br/>
-
             <span>Receiver:</span>
             <input type="text" value={receiver} onChange={handleReceiver}/>
 
