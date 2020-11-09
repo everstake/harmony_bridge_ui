@@ -20,7 +20,6 @@ function App() {
     ];
 
     const updateBalance = async () => {
-        console.log('onWalletChanged', account, harmony);
         if (!harmony || !account) {
             return
         }
@@ -32,7 +31,6 @@ function App() {
     };
 
     const onWalletChanged = async () => {
-        console.log('onWalletChanged', account, harmony);
         if (!harmony || !account) {
             return
         }

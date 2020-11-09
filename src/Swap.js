@@ -71,7 +71,7 @@ export function Swap({assetID}) {
 
     return <div className={"SWapContainer"}>
         <button onClick={refreshInfo}>
-            get info from contract
+            update info
         </button>
         <br/>
 
