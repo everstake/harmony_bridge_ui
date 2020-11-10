@@ -36,3 +36,49 @@
     transform: rotate(360deg);
   }
 }
+
+.Header {
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
+  justify-content: space-between;
+}
+
+.PickWallet {
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 200px;
+  height: 100px;
+}
+
+.PickWalletContent {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  margin-inside: 10px;
+  margin-top: 30px;
+}
+
+.PickWalletNone {
+  color: red;
+}
+
+.SWapContainer {
+  background-color: #cca;
+  border-color: #282c34;
+  border-width: 1px;
+  padding: 100px;
+}
+
+.SwapParams {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-inside: 10px;
+}
+
+.ErrorLabel {
+  color: red;
+}
