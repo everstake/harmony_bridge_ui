@@ -69,7 +69,7 @@ export function Swap({assetID}) {
         refreshInfo().catch();
     };
 
-    return <div className={"SWapContainer"}>
+    return <div className={"SwapContainer"}>
         <button onClick={refreshInfo}>
             update info
         </button>

@@ -3,6 +3,7 @@ import React, {useState, createContext} from "react";
 import {PickWallet} from "./PickWallet";
 import {Swap} from "./Swap";
 import {Select} from "antd";
+import {EdgewareSwap} from "./EdgewareSwap";
 
 const {Option} = Select;
 
@@ -59,6 +60,7 @@ function App() {
                 </div>
                 <br/>
 
+                <EdgewareSwap assetID={"5EKG68MrX6C4Ax4VP3ZnmApquQjpciLHwfPseS3b4fcdbSnS"}></EdgewareSwap>
                 {
                     account ? (
                         <div>
