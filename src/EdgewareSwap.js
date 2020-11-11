@@ -5,38 +5,39 @@ const config = require("./config");
 const Bridge = require("./contracts/Bridge");
 const Token = require("./contracts/EdgewareToken");
 
-export function Swap({assetID}) {
+export function EdgewareSwap({assetID}) {
     const [balance, setBalance] = useState("");
-    const [receiver, setReceiver] = useState("one1swpff8afhyyc2yds6z7v2mk8vr5am5gkupgnh4");
+    const [receiver, setReceiver] = useState("5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty");
     const [assetName, setAssetName] = useState("");
     const [inputValue, setInputValue] = useState(0);
-    const {harmony, account} = useContext(AppContext);
+    const {harmony, account, updateBalance} = useContext(AppContext);
     const [balanceCoin, setBalanceCoin] = useState("");
 
     const updateCoinBalance = async () => {
         if (!harmony || !account) {
             return
         }
-        const balance = await harmony.blockchain.getBalance({
-            address: account,
-            shardID: 0,
-        }).then((r) => r).catch(() => "error");
-        setBalanceCoin(harmony.utils.hexToBN(balance.result).toString());
+        console.log('harmony', harmony);
+        window.hrm = harmony;
+
+        const { data } = await harmony.query.system.account(account);
+        console.log(data["free"]);
+        setBalanceCoin(data["free"].toString(10));
     };
 
     const refreshInfo = async () => {
         if (!harmony) {
             return;
         }
-        if (assetID === "Harmony") {
-            setAssetName("Harmony");
-        } else {
-            const token = harmony.contracts.createContract(Token.abi, assetID);
-            const balanceResult = await token.methods.balanceOf(account).call();
-            setBalance(balanceResult.toString());
-            const nameResult = await token.methods.name().call();
-            setAssetName(nameResult);
-        }
+        // if (assetID === "Harmony") {
+        //     setAssetName("Harmony");
+        // } else {
+        //     const token = harmony.contracts.createContract(Token.abi, assetID);
+        //     const balanceResult = await token.methods.balanceOf(account).call();
+        //     setBalance(balanceResult.toString());
+        //     const nameResult = await token.methods.name().call();
+        //     setAssetName(nameResult);
+        // }
         await updateCoinBalance();
     };
 
@@ -81,7 +82,7 @@ export function Swap({assetID}) {
         refreshInfo().catch();
     };
 
-    return <div className={"SwapContainer"}>
+    return <div className={"SwapContainer-Edgeware"}>
         <button onClick={refreshInfo}>
             update info
         </button>
@@ -90,7 +91,7 @@ export function Swap({assetID}) {
         <span>Token {assetName}({assetID})</span>
         <br/>
 
-        {assetID === "Harmony" ? <span>token balance {balanceCoin}</span> : <span>token balance {balance}</span>}
+        {assetID === "edgeware" ? <span>token balance {balanceCoin}</span> : <span>token balance {balance}</span>}
         <br/>
 
         <div className={"SwapParams"}>
@@ -100,8 +101,8 @@ export function Swap({assetID}) {
             <span>Amount:</span>
             <input type="text" value={inputValue} onChange={onChangeTransferValue}/>
 
-            <button onClick={assetID === "Harmony" ? handleTransferCoin : handleTransferToken}>
-                {assetID === "Harmony" ? "Transfer coin" :  "Transfer token"}
+            <button onClick={assetID === "edgeware" ? handleTransferCoin : handleTransferToken}>
+                {assetID === "edgeware" ? "Transfer coin" :  "Transfer token"}
             </button>
         </div>
     </div>
