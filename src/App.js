@@ -19,7 +19,8 @@ function App() {
     const assets = [
         "Harmony",
         ...config.tokens,
-        "edgeware",
+        "Edgeware",
+        ...config["edgeware-tokens"],
     ];
 
     const onWalletChanged = async () => {
@@ -69,7 +70,7 @@ function App() {
                 <div className="Header">
                     <PickWallet/>
                     {
-                        accounts ?
+                        accounts.length === 1 ?
                             <span>Address {account}</span>
                             :
                             <div>

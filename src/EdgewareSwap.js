@@ -1,49 +1,57 @@
 import React, {useContext, useEffect, useState} from "react";
 import {AppContext} from "./App";
+import {ContractPromise} from "@polkadot/api-contract";
 
 const config = require("./config");
-const Bridge = require("./contracts/Bridge");
-const Token = require("./contracts/EdgewareToken");
+const Bridge = require("./contractsEdgeware/edgeware_bridge_metadata");
+const Token = require("./contractsEdgeware/erc20token_metadata");
 
 export function EdgewareSwap({assetID}) {
     const [balance, setBalance] = useState("");
     const [receiver, setReceiver] = useState("5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty");
     const [assetName, setAssetName] = useState("");
     const [inputValue, setInputValue] = useState(0);
-    const {harmony, account, updateBalance} = useContext(AppContext);
+    const {harmony, account} = useContext(AppContext);
     const [balanceCoin, setBalanceCoin] = useState("");
 
     const updateCoinBalance = async () => {
         if (!harmony || !account) {
             return
         }
-        console.log('harmony', harmony);
-        window.hrm = harmony;
+        // console.log('harmony', harmony);
+        // window.hrm = harmony;
 
-        const { data } = await harmony.query.system.account(account);
-        console.log(data["free"]);
-        setBalanceCoin(data["free"].toString(10));
+        const {data} = await harmony.query.system.account(account);
+        // console.log("balance",data["free"]);
+        setBalanceCoin(data["free"].toHuman());
     };
 
     const refreshInfo = async () => {
         if (!harmony) {
             return;
         }
-        // if (assetID === "Harmony") {
-        //     setAssetName("Harmony");
-        // } else {
-        //     const token = harmony.contracts.createContract(Token.abi, assetID);
-        //     const balanceResult = await token.methods.balanceOf(account).call();
-        //     setBalance(balanceResult.toString());
-        //     const nameResult = await token.methods.name().call();
-        //     setAssetName(nameResult);
-        // }
-        await updateCoinBalance();
+        if (assetID === "Edgeware") {
+            setAssetName("Edgeware");
+            await updateCoinBalance();
+        } else {
+            setAssetName("Token");
+            const token = await new ContractPromise(harmony, Token, assetID);
+
+            if (!token) {
+                return;
+            }
+            const { result, output }  = await token.query.balanceOf(account,  0, -1, account);
+            if (result.isOk) {
+                setBalance(output.toHuman());
+            } else {
+                console.error('Error', result.asErr);
+            }
+        }
     };
 
     useEffect(() => {
         refreshInfo().catch(console.error);
-    }, [harmony, assetID]);
+    }, [harmony, assetID, account]);
 
     const handleReceiver = (event) => {
         setReceiver(event.target.value);
@@ -91,7 +99,7 @@ export function EdgewareSwap({assetID}) {
         <span>Token {assetName}({assetID})</span>
         <br/>
 
-        {assetID === "edgeware" ? <span>token balance {balanceCoin}</span> : <span>token balance {balance}</span>}
+        {assetID === "Edgeware" ? <span>coin balance {balanceCoin}</span> : <span>token balance {balance}</span>}
         <br/>
 
         <div className={"SwapParams"}>
@@ -101,8 +109,8 @@ export function EdgewareSwap({assetID}) {
             <span>Amount:</span>
             <input type="text" value={inputValue} onChange={onChangeTransferValue}/>
 
-            <button onClick={assetID === "edgeware" ? handleTransferCoin : handleTransferToken}>
-                {assetID === "edgeware" ? "Transfer coin" :  "Transfer token"}
+            <button onClick={assetID === "Edgeware" ? handleTransferCoin : handleTransferToken}>
+                {assetID === "Edgeware" ? "Transfer coin" : "Transfer token"}
             </button>
         </div>
     </div>

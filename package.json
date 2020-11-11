@@ -7,6 +7,7 @@
     "@harmony-js/crypto": "^0.1.55",
     "@harmony-js/network": "latest",
     "@harmony-js/utils": "^0.1.55",
+    "@polkadot/api-contract": "^2.6.1",
     "@polkadot/apps": "^0.39.1",
     "@polkadot/extension-dapp": "^0.34.1",
     "@testing-library/jest-dom": "^5.11.4",
