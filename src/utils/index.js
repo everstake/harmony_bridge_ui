@@ -12,7 +12,7 @@ const {ChainType} = require('@harmony-js/utils');
 
 const config = require("../config");
 
-export async function getHarmony(what) {
+export async function getWalletAPI(what) {
     let hmyEx = null;
     let wallet = what;
     if (wallet !== "MathWallet Harmony" && wallet !== "Harmony" && getWalletsList().length > 0) {

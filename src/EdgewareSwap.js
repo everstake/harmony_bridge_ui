@@ -12,19 +12,19 @@ export function EdgewareSwap({assetID}) {
     const [receiver, setReceiver] = useState("5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty");
     const [assetName, setAssetName] = useState("");
     const [inputValue, setInputValue] = useState(0);
-    const {harmony, account} = useContext(AppContext);
+    const {walletAPI, account} = useContext(AppContext);
     const [balanceCoin, setBalanceCoin] = useState("");
 
     const updateCoinBalance = async () => {
-        if (!harmony || !account) {
+        if (!walletAPI || !account) {
             return
         }
-        const {data} = await harmony.query.system.account(account);
+        const {data} = await walletAPI.query.system.account(account);
         setBalanceCoin(data["free"].toString());
     };
 
     const refreshInfo = async () => {
-        if (!harmony) {
+        if (!walletAPI) {
             return;
         }
         if (assetID === "Edgeware") {
@@ -32,7 +32,7 @@ export function EdgewareSwap({assetID}) {
             await updateCoinBalance();
         } else {
             setAssetName("Token");
-            const token = await new ContractPromise(harmony, Token, assetID);
+            const token = await new ContractPromise(walletAPI, Token, assetID);
 
             if (!token) {
                 return;
@@ -48,7 +48,7 @@ export function EdgewareSwap({assetID}) {
 
     useEffect(() => {
         refreshInfo().catch(console.error);
-    }, [harmony, assetID, account]);
+    }, [walletAPI, assetID, account]);
 
     const handleReceiver = (event) => {
         setReceiver(event.target.value);
@@ -59,10 +59,10 @@ export function EdgewareSwap({assetID}) {
     };
 
     const handleTransferToken = async () => {
-        if (!harmony) {
+        if (!walletAPI) {
             return;
         }
-        const bridge = await harmony.contracts.createContract(Bridge.abi, config.bridge);
+        const bridge = await walletAPI.contracts.createContract(Bridge.abi, config.bridge);
         await bridge.methods.transferToken(receiver, inputValue, assetID).send({
             from: account,
             gasLimit: 8000000,
@@ -73,14 +73,14 @@ export function EdgewareSwap({assetID}) {
     };
 
     const handleTransferCoin = async () => {
-        if (!harmony) {
+        if (!walletAPI) {
             return;
         }
 
         const injector = await web3FromAddress(account);
-        await harmony.setSigner(injector.signer);
+        await walletAPI.setSigner(injector.signer);
 
-        const bridge = await new ContractPromise(harmony, Bridge, config["edgeware-bridge"]);
+        const bridge = await new ContractPromise(walletAPI, Bridge, config["edgeware-bridge"]);
         if (!bridge) {
             return;
         }

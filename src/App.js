@@ -13,27 +13,36 @@ const config = require("./config");
 function App() {
     const [account, setAccount] = useState(null);
     const [accounts, setAccounts] = useState([]);
-    const [harmony, setHarmony] = useState(null);
+    const [walletAPI, setWalletAPI] = useState(null);
     const [currentAsset, setCurrentAsset] = useState("Harmony");
     const [walletType, setWalletType] = useState("");
-    const assets = [
-        "Harmony",
-        ...config.tokens,
-        "Edgeware",
-        ...config["edgeware-tokens"],
-    ];
+    const [assets, setAssets] = useState([]);
 
     const onWalletChanged = async () => {
-        if (!harmony || !account) {
+        if (!walletAPI || !account) {
             return
+        }
+
+        if (walletType === "MathWallet Harmony") {
+            setAssets([
+                "Harmony",
+                ...config.tokens,
+            ]);
+            setCurrentAsset("Harmony");
+        } else {
+            setAssets([
+                "Edgeware",
+                ...config["edgeware-tokens"],
+            ]);
+            setCurrentAsset("Edgeware");
         }
     };
 
-    React.useEffect(onWalletChanged, [account, harmony]);
+    React.useEffect(onWalletChanged, [account, walletAPI, walletType]);
 
     const contextValues = {
-        harmony,
-        setHarmony,
+        walletAPI,
+        setWalletAPI,
         account,
         setAccount,
         setAccounts,

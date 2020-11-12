@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from "react";
-import {getHarmony, getWalletsList} from "./utils";
+import {getWalletAPI, getWalletsList} from "./utils";
 import {AppContext} from "./App";
 import 'antd/dist/antd.css';
 import {Select} from 'antd';
@@ -9,13 +9,13 @@ const {Option} = Select;
 export function PickWallet() {
     const [wallets, setWallets] = useState([]);
     const [currentWallet, setCurrentWallet] = useState("");
-    const {account, harmony, setHarmony, setAccount, setAccounts, setWalletType} = useContext(AppContext);
+    const {account, walletAPI, setWalletAPI, setAccount, setAccounts, setWalletType} = useContext(AppContext);
 
     const handleChange = async (what) => {
-        const harmony = await getHarmony(what);
+        const walletAPI = await getWalletAPI(what);
         setAccount(null);
-        if (harmony) {
-            const accounts = await harmony.login();
+        if (walletAPI) {
+            const accounts = await walletAPI.login();
             if (accounts) {
                 if (Array.isArray(accounts) && accounts.length) {
                     setAccounts(accounts.map(i => i.address));
@@ -24,7 +24,7 @@ export function PickWallet() {
                     setAccounts([accounts.address]);
                     setAccount(accounts.address);
                 }
-                setHarmony(harmony);
+                setWalletAPI(walletAPI);
                 setCurrentWallet(what);
                 setWalletType(what);
             }
@@ -45,18 +45,18 @@ export function PickWallet() {
     }, []);
 
     const handleLogin = async () => {
-        if (!harmony) {
+        if (!walletAPI) {
             return;
         }
-        const account = await harmony.login();
+        const account = await walletAPI.login();
         setAccount(account.address);
     };
 
     const handleLogout = async () => {
-        if (!harmony) {
+        if (!walletAPI) {
             return;
         }
-        await harmony.logout();
+        await walletAPI.logout();
         setAccount(null);
     };
 

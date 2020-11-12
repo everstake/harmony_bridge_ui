@@ -10,28 +10,28 @@ export function Swap({assetID}) {
     const [receiver, setReceiver] = useState("one1swpff8afhyyc2yds6z7v2mk8vr5am5gkupgnh4");
     const [assetName, setAssetName] = useState("");
     const [inputValue, setInputValue] = useState(0);
-    const {harmony, account} = useContext(AppContext);
+    const {walletAPI, account} = useContext(AppContext);
     const [balanceCoin, setBalanceCoin] = useState("");
 
     const updateCoinBalance = async () => {
-        if (!harmony || !account) {
+        if (!walletAPI || !account) {
             return
         }
-        const balance = await harmony.blockchain.getBalance({
+        const balance = await walletAPI.blockchain.getBalance({
             address: account,
             shardID: 0,
         }).then((r) => r).catch(() => "error");
-        setBalanceCoin(harmony.utils.hexToBN(balance.result).toString());
+        setBalanceCoin(walletAPI.utils.hexToBN(balance.result).toString());
     };
 
     const refreshInfo = async () => {
-        if (!harmony) {
+        if (!walletAPI) {
             return;
         }
         if (assetID === "Harmony") {
             setAssetName("Harmony");
         } else {
-            const token = harmony.contracts.createContract(Token.abi, assetID);
+            const token = walletAPI.contracts.createContract(Token.abi, assetID);
             const balanceResult = await token.methods.balanceOf(account).call();
             setBalance(balanceResult.toString());
             const nameResult = await token.methods.name().call();
@@ -42,7 +42,7 @@ export function Swap({assetID}) {
 
     useEffect(() => {
         refreshInfo().catch(console.error);
-    }, [harmony, assetID]);
+    }, [walletAPI, assetID]);
 
     const handleReceiver = (event) => {
         setReceiver(event.target.value);
@@ -53,10 +53,10 @@ export function Swap({assetID}) {
     };
 
     const handleTransferToken = async () => {
-        if (!harmony) {
+        if (!walletAPI) {
             return;
         }
-        const bridge = await harmony.contracts.createContract(Bridge.abi, config.bridge);
+        const bridge = await walletAPI.contracts.createContract(Bridge.abi, config.bridge);
         await bridge.methods.transferToken(receiver, inputValue, assetID).send({
             from: account,
             gasLimit: 8000000,
@@ -67,10 +67,10 @@ export function Swap({assetID}) {
     };
 
     const handleTransferCoin = async () => {
-        if (!harmony) {
+        if (!walletAPI) {
             return;
         }
-        const bridge = await harmony.contracts.createContract(Bridge.abi, config.bridge);
+        const bridge = await walletAPI.contracts.createContract(Bridge.abi, config.bridge);
         await bridge.methods.transferCoin(receiver).send({
             from: account,
             gasLimit: 8000000,
