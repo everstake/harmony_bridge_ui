@@ -85,7 +85,7 @@ export function PickWallet() {
                 wallets.length ?
                     content()
                     :
-                    <span className={"PickWalletNone"}>Please install Harmony or MathWallet wallet or unlock or wait injection</span>
+                    <span className={"PickWalletNone"}>You must install polkadot{"{"}.js} extension and MathWallet wallet or unlock it or wait injection</span>
             }
         </div>
     );

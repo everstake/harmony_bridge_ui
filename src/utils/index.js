@@ -8,7 +8,7 @@ import {
 const { ApiPromise, WsProvider } = require('@polkadot/api');
 web3Enable(window.origin);
 
-const {ChainID, ChainType} = require('@harmony-js/utils');
+const {ChainType} = require('@harmony-js/utils');
 
 const config = require("../config");
 
@@ -50,7 +50,6 @@ export async function getHarmony(what) {
 
         hmyEx = api;
 
-
         hmyEx.login = async () => {
             if (!isWeb3Injected) {
                 throw new Error("Please install/unlock the MathWallet first");
@@ -60,8 +59,6 @@ export async function getHarmony(what) {
 
         hmyEx.logout = () => {
         };
-
-        console.log('hmyEx', hmyEx);
     }
 
     return hmyEx
