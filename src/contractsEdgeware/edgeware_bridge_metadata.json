@@ -1,12 +1,12 @@
 {
   "metadataVersion": "0.1.0",
   "source": {
-    "hash": "0xd4cdd10fa0ee79c4d250856668f090fcf9925a3f842ca54f7bbe49bd543cfe5e",
+    "hash": "0x95993a2178546043dc82eb6809ad170835294dd1bd512ec43b4e3a90b03adec0",
     "language": "ink! 3.0.0-rc2",
     "compiler": "rustc 1.49.0-nightly"
   },
   "contract": {
-    "name": "erc20token",
+    "name": "edgeware_bridge",
     "version": "0.1.0",
     "authors": [
       "[your_name] <[your_email]>"
@@ -22,7 +22,7 @@
               "displayName": [
                 "u16"
               ],
-              "type": 8
+              "type": 18
             }
           },
           {
@@ -31,7 +31,7 @@
               "displayName": [
                 "u16"
               ],
-              "type": 8
+              "type": 18
             }
           },
           {
@@ -58,7 +58,7 @@
               "displayName": [
                 "ERC20Token"
               ],
-              "type": 18
+              "type": 19
             }
           }
         ],
@@ -81,7 +81,7 @@
               "displayName": [
                 "String"
               ],
-              "type": 20
+              "type": 22
             }
           },
           {
@@ -92,7 +92,7 @@
               "displayName": [
                 "AccountId"
               ],
-              "type": 10
+              "type": 9
             }
           },
           {
@@ -114,7 +114,7 @@
               "displayName": [
                 "AccountId"
               ],
-              "type": 10
+              "type": 9
             }
           },
           {
@@ -155,7 +155,7 @@
               "displayName": [
                 "AccountId"
               ],
-              "type": 10
+              "type": 9
             }
           }
         ],
@@ -197,7 +197,7 @@
               "displayName": [
                 "AccountId"
               ],
-              "type": 10
+              "type": 9
             }
           }
         ],
@@ -218,7 +218,7 @@
               "displayName": [
                 "AccountId"
               ],
-              "type": 10
+              "type": 9
             }
           }
         ],
@@ -239,7 +239,7 @@
               "displayName": [
                 "u16"
               ],
-              "type": 8
+              "type": 18
             }
           }
         ],
@@ -260,7 +260,7 @@
               "displayName": [
                 "AccountId"
               ],
-              "type": 10
+              "type": 9
             }
           },
           {
@@ -290,7 +290,7 @@
               "displayName": [
                 "AccountId"
               ],
-              "type": 10
+              "type": 9
             }
           }
         ],
@@ -320,7 +320,7 @@
               "displayName": [
                 "AccountId"
               ],
-              "type": 10
+              "type": 9
             }
           }
         ],
@@ -357,12 +357,384 @@
       {
         "args": [
           {
+            "name": "token",
+            "type": {
+              "displayName": [
+                "AccountId"
+              ],
+              "type": 9
+            }
+          }
+        ],
+        "docs": [],
+        "mutates": false,
+        "name": [
+          "is_token_in"
+        ],
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "bool"
+          ],
+          "type": 13
+        },
+        "selector": "0xd6344dd6"
+      },
+      {
+        "args": [
+          {
+            "name": "validator",
+            "type": {
+              "displayName": [
+                "AccountId"
+              ],
+              "type": 9
+            }
+          }
+        ],
+        "docs": [],
+        "mutates": false,
+        "name": [
+          "is_validator_in"
+        ],
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "bool"
+          ],
+          "type": 13
+        },
+        "selector": "0x29daa604"
+      },
+      {
+        "args": [
+          {
+            "name": "swap_hash",
+            "type": {
+              "displayName": [
+                "Vec"
+              ],
+              "type": 4
+            }
+          }
+        ],
+        "docs": [],
+        "mutates": false,
+        "name": [
+          "is_swap_request_in"
+        ],
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "bool"
+          ],
+          "type": 13
+        },
+        "selector": "0xa38e2dcd"
+      },
+      {
+        "args": [
+          {
+            "name": "token",
+            "type": {
+              "displayName": [
+                "AccountId"
+              ],
+              "type": 9
+            }
+          }
+        ],
+        "docs": [],
+        "mutates": false,
+        "name": [
+          "get_daily_limit"
+        ],
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "u128"
+          ],
+          "type": 15
+        },
+        "selector": "0xd26dcbc3"
+      },
+      {
+        "args": [
+          {
+            "name": "token",
+            "type": {
+              "displayName": [
+                "AccountId"
+              ],
+              "type": 9
+            }
+          }
+        ],
+        "docs": [],
+        "mutates": false,
+        "name": [
+          "get_daily_spend"
+        ],
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "u128"
+          ],
+          "type": 15
+        },
+        "selector": "0x36f3f861"
+      },
+      {
+        "args": [
+          {
+            "name": "token",
+            "type": {
+              "displayName": [
+                "AccountId"
+              ],
+              "type": 9
+            }
+          }
+        ],
+        "docs": [],
+        "mutates": false,
+        "name": [
+          "get_daily_limit_set_time"
+        ],
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "u64"
+          ],
+          "type": 17
+        },
+        "selector": "0x80e2cca2"
+      },
+      {
+        "args": [],
+        "docs": [],
+        "mutates": false,
+        "name": [
+          "get_fee"
+        ],
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "u128"
+          ],
+          "type": 15
+        },
+        "selector": "0xf4c7a6d0"
+      },
+      {
+        "args": [],
+        "docs": [],
+        "mutates": false,
+        "name": [
+          "get_signature_threshold"
+        ],
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "u16"
+          ],
+          "type": 18
+        },
+        "selector": "0x80db5cd9"
+      },
+      {
+        "args": [],
+        "docs": [],
+        "mutates": false,
+        "name": [
+          "get_max_validator_count"
+        ],
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "u16"
+          ],
+          "type": 18
+        },
+        "selector": "0xc30c9a80"
+      },
+      {
+        "args": [],
+        "docs": [],
+        "mutates": false,
+        "name": [
+          "get_tx_expiration_time"
+        ],
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "u64"
+          ],
+          "type": 17
+        },
+        "selector": "0x1678a5fd"
+      },
+      {
+        "args": [],
+        "docs": [],
+        "mutates": false,
+        "name": [
+          "get_transfer_nonce"
+        ],
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "u128"
+          ],
+          "type": 15
+        },
+        "selector": "0x2a30822e"
+      },
+      {
+        "args": [],
+        "docs": [],
+        "mutates": false,
+        "name": [
+          "get_tokens"
+        ],
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "Vec"
+          ],
+          "type": 8
+        },
+        "selector": "0xc5bd0163"
+      },
+      {
+        "args": [],
+        "docs": [],
+        "mutates": false,
+        "name": [
+          "get_validators"
+        ],
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "Vec"
+          ],
+          "type": 8
+        },
+        "selector": "0x10150dd6"
+      },
+      {
+        "args": [],
+        "docs": [],
+        "mutates": false,
+        "name": [
+          "get_zero_address"
+        ],
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "AccountId"
+          ],
+          "type": 9
+        },
+        "selector": "0xe3a8490c"
+      },
+      {
+        "args": [],
+        "docs": [],
+        "mutates": false,
+        "name": [
+          "get_swaps_list"
+        ],
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "Vec"
+          ],
+          "type": 20
+        },
+        "selector": "0x8e0db3af"
+      },
+      {
+        "args": [],
+        "docs": [],
+        "mutates": false,
+        "name": [
+          "get_block_timestamp"
+        ],
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "u64"
+          ],
+          "type": 17
+        },
+        "selector": "0x8414d89c"
+      },
+      {
+        "args": [
+          {
+            "name": "message_hash",
+            "type": {
+              "displayName": [
+                "Vec"
+              ],
+              "type": 4
+            }
+          }
+        ],
+        "docs": [],
+        "mutates": false,
+        "name": [
+          "get_count_of_approvals"
+        ],
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "u16"
+          ],
+          "type": 18
+        },
+        "selector": "0xb4a76fa9"
+      },
+      {
+        "args": [
+          {
+            "name": "receiver",
+            "type": {
+              "displayName": [
+                "AccountId"
+              ],
+              "type": 9
+            }
+          },
+          {
+            "name": "amount_to_send",
+            "type": {
+              "displayName": [
+                "u128"
+              ],
+              "type": 15
+            }
+          }
+        ],
+        "docs": [],
+        "mutates": true,
+        "name": [
+          "test_coin_transfer"
+        ],
+        "payable": false,
+        "returnType": null,
+        "selector": "0x3b7b9c38"
+      },
+      {
+        "args": [
+          {
             "name": "transfer_info",
             "type": {
               "displayName": [
                 "SwapMessage"
               ],
-              "type": 19
+              "type": 21
             }
           }
         ],
@@ -383,7 +755,7 @@
               "displayName": [
                 "String"
               ],
-              "type": 20
+              "type": 22
             }
           }
         ],
@@ -392,7 +764,7 @@
         "name": [
           "transfer_coin"
         ],
-        "payable": false,
+        "payable": true,
         "returnType": {
           "displayName": [
             "bool"
@@ -409,7 +781,7 @@
               "displayName": [
                 "String"
               ],
-              "type": 20
+              "type": 22
             }
           },
           {
@@ -427,7 +799,7 @@
               "displayName": [
                 "AccountId"
               ],
-              "type": 10
+              "type": 9
             }
           }
         ],
@@ -567,7 +939,7 @@
                                       "layout": {
                                         "cell": {
                                           "key": "0x0300000002000000000000000000000000000000000000000000000000000000",
-                                          "ty": 9
+                                          "ty": 11
                                         }
                                       },
                                       "len": 4294967295,
@@ -647,7 +1019,7 @@
                                       "layout": {
                                         "cell": {
                                           "key": "0x0500000003000000000000000000000000000000000000000000000000000000",
-                                          "ty": 9
+                                          "ty": 11
                                         }
                                       },
                                       "len": 4294967295,
@@ -727,7 +1099,7 @@
                                       "layout": {
                                         "cell": {
                                           "key": "0x0700000004000000000000000000000000000000000000000000000000000000",
-                                          "ty": 9
+                                          "ty": 11
                                         }
                                       },
                                       "len": 4294967295,
@@ -807,7 +1179,7 @@
                                       "layout": {
                                         "cell": {
                                           "key": "0x0900000005000000000000000000000000000000000000000000000000000000",
-                                          "ty": 9
+                                          "ty": 11
                                         }
                                       },
                                       "len": 4294967295,
@@ -887,7 +1259,7 @@
                                       "layout": {
                                         "cell": {
                                           "key": "0x0b00000006000000000000000000000000000000000000000000000000000000",
-                                          "ty": 9
+                                          "ty": 11
                                         }
                                       },
                                       "len": 4294967295,
@@ -943,7 +1315,7 @@
           "layout": {
             "cell": {
               "key": "0x0d00000006000000000000000000000000000000000000000000000000000000",
-              "ty": 8
+              "ty": 18
             }
           },
           "name": "signature_threshold"
@@ -952,7 +1324,7 @@
           "layout": {
             "cell": {
               "key": "0x0e00000006000000000000000000000000000000000000000000000000000000",
-              "ty": 8
+              "ty": 18
             }
           },
           "name": "max_validator_count"
@@ -970,7 +1342,7 @@
           "layout": {
             "cell": {
               "key": "0x1000000006000000000000000000000000000000000000000000000000000000",
-              "ty": 10
+              "ty": 9
             }
           },
           "name": "owner"
@@ -992,7 +1364,7 @@
                   "layout": {
                     "cell": {
                       "key": "0x1200000006000000000000000000000000000000000000000000000000000000",
-                      "ty": 10
+                      "ty": 9
                     }
                   },
                   "name": "account_id"
@@ -1131,48 +1503,17 @@
     },
     {
       "def": {
-        "primitive": "u16"
-      }
-    },
-    {
-      "def": {
-        "variant": {
-          "variants": [
-            {
-              "fields": [
-                {
-                  "type": 6
-                }
-              ],
-              "name": "Vacant"
-            },
-            {
-              "fields": [
-                {
-                  "type": 10
-                }
-              ],
-              "name": "Occupied"
-            }
-          ]
+        "sequence": {
+          "type": 9
         }
-      },
-      "params": [
-        10
-      ],
-      "path": [
-        "ink_storage",
-        "collections",
-        "stash",
-        "Entry"
-      ]
+      }
     },
     {
       "def": {
         "composite": {
           "fields": [
             {
-              "type": 11
+              "type": 10
             }
           ]
         }
@@ -1190,6 +1531,39 @@
           "type": 5
         }
       }
+    },
+    {
+      "def": {
+        "variant": {
+          "variants": [
+            {
+              "fields": [
+                {
+                  "type": 6
+                }
+              ],
+              "name": "Vacant"
+            },
+            {
+              "fields": [
+                {
+                  "type": 9
+                }
+              ],
+              "name": "Occupied"
+            }
+          ]
+        }
+      },
+      "params": [
+        9
+      ],
+      "path": [
+        "ink_storage",
+        "collections",
+        "stash",
+        "Entry"
+      ]
     },
     {
       "def": {
@@ -1283,11 +1657,16 @@
     },
     {
       "def": {
+        "primitive": "u16"
+      }
+    },
+    {
+      "def": {
         "composite": {
           "fields": [
             {
               "name": "account_id",
-              "type": 10
+              "type": 9
             }
           ]
         }
@@ -1300,6 +1679,13 @@
     },
     {
       "def": {
+        "sequence": {
+          "type": 4
+        }
+      }
+    },
+    {
+      "def": {
         "composite": {
           "fields": [
             {
@@ -1308,11 +1694,11 @@
             },
             {
               "name": "receiver",
-              "type": 10
+              "type": 9
             },
             {
               "name": "sender",
-              "type": 20
+              "type": 22
             },
             {
               "name": "timestamp",
@@ -1324,7 +1710,7 @@
             },
             {
               "name": "asset",
-              "type": 10
+              "type": 9
             },
             {
               "name": "transfer_nonce",

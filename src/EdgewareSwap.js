@@ -1,6 +1,8 @@
 import React, {useContext, useEffect, useState} from "react";
 import {AppContext} from "./App";
 import {ContractPromise} from "@polkadot/api-contract";
+import {web3Enable, web3FromAddress} from "@polkadot/extension-dapp";
+web3Enable('polkadot-js/apps');
 
 const config = require("./config");
 const Bridge = require("./contractsEdgeware/edgeware_bridge_metadata");
@@ -18,12 +20,8 @@ export function EdgewareSwap({assetID}) {
         if (!harmony || !account) {
             return
         }
-        // console.log('harmony', harmony);
-        // window.hrm = harmony;
-
         const {data} = await harmony.query.system.account(account);
-        // console.log("balance",data["free"]);
-        setBalanceCoin(data["free"].toHuman());
+        setBalanceCoin(data["free"].toString());
     };
 
     const refreshInfo = async () => {
@@ -40,9 +38,9 @@ export function EdgewareSwap({assetID}) {
             if (!token) {
                 return;
             }
-            const { result, output }  = await token.query.balanceOf(account,  0, -1, account);
+            const {result, output} = await token.query.balanceOf(account, 0, -1, account);
             if (result.isOk) {
-                setBalance(output.toHuman());
+                setBalance(output.toString());
             } else {
                 console.error('Error', result.asErr);
             }
@@ -79,12 +77,22 @@ export function EdgewareSwap({assetID}) {
         if (!harmony) {
             return;
         }
-        const bridge = await harmony.contracts.createContract(Bridge.abi, config.bridge);
-        await bridge.methods.transferCoin(receiver).send({
-            from: account,
-            gasLimit: 8000000,
-            gasPrice: 1000000000,
-            value: inputValue
+
+        const injector = await web3FromAddress(account);
+        harmony.setSigner(injector.signer);
+
+        const bridge = await new ContractPromise(harmony, Bridge, config["edgeware-bridge"]);
+        if (!bridge) {
+            return;
+        }
+
+        const gasLimit = 5000n * 1000000n;
+        await bridge.tx.transferCoin(inputValue, gasLimit, account).signAndSend(account, (result) => {
+            if (result.status.isInBlock) {
+                console.log('in a block');
+            } else if (result.status.isFinalized) {
+                console.log('finalized');
+            }
         });
 
         refreshInfo().catch();
