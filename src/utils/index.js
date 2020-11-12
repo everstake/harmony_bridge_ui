@@ -6,7 +6,7 @@ import {
     web3Enable,
 } from "@polkadot/extension-dapp";
 const { ApiPromise, WsProvider } = require('@polkadot/api');
-web3Enable('polkadot-js/apps');
+web3Enable(window.origin);
 
 const {ChainID, ChainType} = require('@harmony-js/utils');
 
@@ -44,7 +44,7 @@ export async function getHarmony(what) {
 
     }
 
-    if (wallet === "MathWallet Edgeware") {
+    if (wallet === "polkadot{.js} extension") {
         const provider = new WsProvider(config["edgeware-endpoint"]);
         const api = await ApiPromise.create({ provider });
 
@@ -79,7 +79,7 @@ export function getWalletsList() {
     // }
 
     if (isWeb3Injected) {
-        result.push("MathWallet Edgeware");
+        result.push("polkadot{.js} extension");
     }
 
     return result;
