@@ -4,7 +4,6 @@ import {
     isWeb3Injected,
     web3Accounts,
     web3Enable,
-    web3FromAddress
 } from "@polkadot/extension-dapp";
 const { ApiPromise, WsProvider } = require('@polkadot/api');
 web3Enable('polkadot-js/apps');
@@ -51,6 +50,7 @@ export async function getHarmony(what) {
 
         hmyEx = api;
 
+
         hmyEx.login = async () => {
             if (!isWeb3Injected) {
                 throw new Error("Please install/unlock the MathWallet first");
@@ -59,7 +59,9 @@ export async function getHarmony(what) {
         };
 
         hmyEx.logout = () => {
-        }
+        };
+
+        console.log('hmyEx', hmyEx);
     }
 
     return hmyEx
@@ -72,9 +74,9 @@ export function getWalletsList() {
         result.push("MathWallet Harmony");
     }
 
-    if (window.onewallet) {
-        result.push("Harmony");
-    }
+    // if (window.onewallet) {
+    //     result.push("Harmony");
+    // }
 
     if (isWeb3Injected) {
         result.push("MathWallet Edgeware");

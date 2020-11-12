@@ -1,8 +1,7 @@
 import React, {useContext, useEffect, useState} from "react";
 import {AppContext} from "./App";
 import {ContractPromise} from "@polkadot/api-contract";
-import {web3Enable, web3FromAddress} from "@polkadot/extension-dapp";
-web3Enable('polkadot-js/apps');
+import { web3FromAddress} from "@polkadot/extension-dapp";
 
 const config = require("./config");
 const Bridge = require("./contractsEdgeware/edgeware_bridge_metadata");
@@ -79,7 +78,7 @@ export function EdgewareSwap({assetID}) {
         }
 
         const injector = await web3FromAddress(account);
-        harmony.setSigner(injector.signer);
+        await harmony.setSigner(injector.signer);
 
         const bridge = await new ContractPromise(harmony, Bridge, config["edgeware-bridge"]);
         if (!bridge) {
@@ -93,6 +92,8 @@ export function EdgewareSwap({assetID}) {
             } else if (result.status.isFinalized) {
                 console.log('finalized');
             }
+        }).catch((e) => {
+            console.error(e);
         });
 
         refreshInfo().catch();
@@ -121,5 +122,5 @@ export function EdgewareSwap({assetID}) {
                 {assetID === "Edgeware" ? "Transfer coin" : "Transfer token"}
             </button>
         </div>
-    </div>
+</div>
 }
