@@ -1,7 +1,7 @@
 {
   "metadataVersion": "0.1.0",
   "source": {
-    "hash": "0x95993a2178546043dc82eb6809ad170835294dd1bd512ec43b4e3a90b03adec0",
+    "hash": "0xaef5f219360943fec40142ea545749551f0a0a5b32b2250eaad810613e9eff0f",
     "language": "ink! 3.0.0-rc2",
     "compiler": "rustc 1.49.0-nightly"
   },
@@ -695,6 +695,62 @@
           "type": 18
         },
         "selector": "0xb4a76fa9"
+      },
+      {
+        "args": [
+          {
+            "name": "receiver",
+            "type": {
+              "displayName": [
+                "AccountId"
+              ],
+              "type": 9
+            }
+          },
+          {
+            "name": "amount_to_send",
+            "type": {
+              "displayName": [
+                "u128"
+              ],
+              "type": 15
+            }
+          }
+        ],
+        "docs": [],
+        "mutates": true,
+        "name": [
+          "test_token_transfer"
+        ],
+        "payable": false,
+        "returnType": null,
+        "selector": "0xd8613fe1"
+      },
+      {
+        "args": [
+          {
+            "name": "receiver",
+            "type": {
+              "displayName": [
+                "AccountId"
+              ],
+              "type": 9
+            }
+          }
+        ],
+        "docs": [],
+        "mutates": false,
+        "name": [
+          "test_token_balance"
+        ],
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "Balance"
+          ],
+          "type": 15
+        },
+        "selector": "0x3ad942a8"
       },
       {
         "args": [

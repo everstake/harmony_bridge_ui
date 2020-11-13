@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from "react";
 import {AppContext} from "./App";
 import {ContractPromise} from "@polkadot/api-contract";
-import { web3FromAddress} from "@polkadot/extension-dapp";
+import {web3FromAddress} from "@polkadot/extension-dapp";
 
 const config = require("./config");
 const Bridge = require("./contractsEdgeware/edgeware_bridge_metadata");
@@ -16,7 +16,7 @@ export function EdgewareSwap({assetID}) {
     const [balanceCoin, setBalanceCoin] = useState("");
 
     const updateCoinBalance = async () => {
-        if (!walletAPI || !account) {
+        if (!walletAPI  || !walletAPI.query|| !account) {
             return
         }
         const {data} = await walletAPI.query.system.account(account);
@@ -24,9 +24,13 @@ export function EdgewareSwap({assetID}) {
     };
 
     const refreshInfo = async () => {
-        if (!walletAPI) {
+        if (!walletAPI || !account || !assetID) {
             return;
         }
+        if (assetID === "Harmony") {
+            return;
+        }
+
         if (assetID === "Edgeware") {
             setAssetName("Edgeware");
             await updateCoinBalance();
@@ -62,12 +66,26 @@ export function EdgewareSwap({assetID}) {
         if (!walletAPI) {
             return;
         }
-        const bridge = await walletAPI.contracts.createContract(Bridge.abi, config.bridge);
-        await bridge.methods.transferToken(receiver, inputValue, assetID).send({
-            from: account,
-            gasLimit: 8000000,
-            gasPrice: 1000000000
-        });
+
+        const injector = await web3FromAddress(account);
+        await walletAPI.setSigner(injector.signer);
+
+        const bridge = await new ContractPromise(walletAPI, Bridge, config["edgeware-bridge"]);
+        if (!bridge) {
+            return;
+        }
+
+        // const gasLimit = 5000n * 1000000n;
+        await bridge.tx.transferToken(0, -1, receiver, inputValue, assetID)
+            .signAndSend(account, (result) => {
+                if (result.status.isInBlock) {
+                    console.log('in a block');
+                } else if (result.status.isFinalized) {
+                    console.log('finalized');
+                }
+            }).catch((e) => {
+                console.error(e);
+            });
 
         refreshInfo().catch();
     };
@@ -100,6 +118,9 @@ export function EdgewareSwap({assetID}) {
     };
 
     return <div className={"SwapContainer-Edgeware"}>
+        <span>Edgeware >>> Harmony</span>
+        <br/>
+
         <button onClick={refreshInfo}>
             update info
         </button>
@@ -122,5 +143,5 @@ export function EdgewareSwap({assetID}) {
                 {assetID === "Edgeware" ? "Transfer coin" : "Transfer token"}
             </button>
         </div>
-</div>
+    </div>
 }

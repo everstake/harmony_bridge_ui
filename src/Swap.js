@@ -14,7 +14,7 @@ export function Swap({assetID}) {
     const [balanceCoin, setBalanceCoin] = useState("");
 
     const updateCoinBalance = async () => {
-        if (!walletAPI || !account) {
+        if (!walletAPI || !walletAPI.blockchain|| !account) {
             return
         }
         const balance = await walletAPI.blockchain.getBalance({
@@ -25,11 +25,16 @@ export function Swap({assetID}) {
     };
 
     const refreshInfo = async () => {
-        if (!walletAPI) {
+        if (!walletAPI || !account || !assetID) {
             return;
         }
+        if (assetID === "Edgeware") {
+            return;
+        }
+
         if (assetID === "Harmony") {
             setAssetName("Harmony");
+            await updateCoinBalance();
         } else {
             const token = walletAPI.contracts.createContract(Token.abi, assetID);
             const balanceResult = await token.methods.balanceOf(account).call();
@@ -37,7 +42,6 @@ export function Swap({assetID}) {
             const nameResult = await token.methods.name().call();
             setAssetName(nameResult);
         }
-        await updateCoinBalance();
     };
 
     useEffect(() => {
@@ -82,6 +86,9 @@ export function Swap({assetID}) {
     };
 
     return <div className={"SwapContainer"}>
+        <span>Harmony >>> Edgeware</span>
+        <br/>
+
         <button onClick={refreshInfo}>
             update info
         </button>
