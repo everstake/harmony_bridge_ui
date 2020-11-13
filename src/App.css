@@ -65,8 +65,15 @@
   color: red;
 }
 
-.SWapContainer {
+.SwapContainer {
   background-color: #cca;
+  border-color: #282c34;
+  border-width: 1px;
+  padding: 100px;
+}
+
+.SwapContainer-Edgeware {
+  background-color: #acc;
   border-color: #282c34;
   border-width: 1px;
   padding: 100px;
