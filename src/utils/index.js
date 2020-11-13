@@ -1,18 +1,25 @@
 import {HarmonyExtension} from "@harmony-js/core";
 import {Messenger, Provider} from "@harmony-js/network";
+import {
+    isWeb3Injected,
+    web3Accounts,
+    web3Enable,
+} from "@polkadot/extension-dapp";
+const { ApiPromise, WsProvider } = require('@polkadot/api');
+web3Enable(window.origin);
 
-const {ChainID, ChainType} = require('@harmony-js/utils');
+const {ChainType} = require('@harmony-js/utils');
 
 const config = require("../config");
 
-export async function getHarmony(what) {
+export async function getWalletAPI(what) {
     let hmyEx = null;
     let wallet = what;
-    if (wallet !== "MathWallet" && wallet !== "Harmony" && getWalletsList().length > 0) {
+    if (wallet !== "MathWallet Harmony" && wallet !== "Harmony" && getWalletsList().length > 0) {
         wallet = getWalletsList().pop();
     }
 
-    if (wallet === "MathWallet") {
+    if (wallet === "MathWallet Harmony") {
         hmyEx = await new HarmonyExtension(window.harmony);
         hmyEx.provider = new Provider(config.endpoint).provider;
 
@@ -35,12 +42,23 @@ export async function getHarmony(what) {
         hmyEx.transactions.messenger = hmyEx.messenger;
         hmyEx.contracts.wallet = hmyEx.wallet;
 
-        // hmyEx.login = async () => {
-        //     // return {
-        //     //     address: "one170h7vcj2gmxsdtc9m6sa6d482mhpsmqd69ejv8",
-        //     // };
-        //     // return hmyEx.wallet.getAccount(45645654, window.location).catch(console.error);
-        // }
+    }
+
+    if (wallet === "polkadot{.js} extension") {
+        const provider = new WsProvider(config["edgeware-endpoint"]);
+        const api = await ApiPromise.create({ provider });
+
+        hmyEx = api;
+
+        hmyEx.login = async () => {
+            if (!isWeb3Injected) {
+                throw new Error("Please install/unlock the MathWallet first");
+            }
+            return await web3Accounts();
+        };
+
+        hmyEx.logout = () => {
+        };
     }
 
     return hmyEx
@@ -50,11 +68,15 @@ export function getWalletsList() {
     let result = [];
 
     if (window.harmony) {
-        result.push("MathWallet");
+        result.push("MathWallet Harmony");
     }
 
-    if (window.onewallet) {
-        result.push("Harmony");
+    // if (window.onewallet) {
+    //     result.push("Harmony");
+    // }
+
+    if (isWeb3Injected) {
+        result.push("polkadot{.js} extension");
     }
 
     return result;

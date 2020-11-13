@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from "react";
-import {getHarmony, getWalletsList} from "./utils";
+import {getWalletAPI, getWalletsList} from "./utils";
 import {AppContext} from "./App";
 import 'antd/dist/antd.css';
 import {Select} from 'antd';
@@ -9,16 +9,25 @@ const {Option} = Select;
 export function PickWallet() {
     const [wallets, setWallets] = useState([]);
     const [currentWallet, setCurrentWallet] = useState("");
-    const {account, harmony, setHarmony, setAccount} = useContext(AppContext);
+    const {account, walletAPI, setWalletAPI, setAccount, setAccounts, setWalletType} = useContext(AppContext);
 
     const handleChange = async (what) => {
-        const harmony = await getHarmony(what);
+        const walletAPI = await getWalletAPI(what);
         setAccount(null);
-        if (harmony) {
-            const account = await harmony.login();
-            setAccount(account.address);
-            setHarmony(harmony);
-            setCurrentWallet(what);
+        if (walletAPI) {
+            const accounts = await walletAPI.login();
+            if (accounts) {
+                if (Array.isArray(accounts) && accounts.length) {
+                    setAccounts(accounts.map(i => i.address));
+                    setAccount(accounts[0].address);
+                } else if (!!accounts.address) {
+                    setAccounts([accounts.address]);
+                    setAccount(accounts.address);
+                }
+                setWalletAPI(walletAPI);
+                setCurrentWallet(what);
+                setWalletType(what);
+            }
         }
     };
 
@@ -36,18 +45,18 @@ export function PickWallet() {
     }, []);
 
     const handleLogin = async () => {
-        if (!harmony) {
+        if (!walletAPI) {
             return;
         }
-        const account = await harmony.login();
+        const account = await walletAPI.login();
         setAccount(account.address);
     };
 
     const handleLogout = async () => {
-        if (!harmony) {
+        if (!walletAPI) {
             return;
         }
-        await harmony.logout();
+        await walletAPI.logout();
         setAccount(null);
     };
 
@@ -70,12 +79,13 @@ export function PickWallet() {
         </div>)
     };
 
-    return (<div className={"PickWallet"}>
+    return (
+        <div className={"PickWallet"}>
             {
                 wallets.length ?
                     content()
                     :
-                    <span className={"PickWalletNone"}>Please install Harmony or MathWallet wallet or unlock</span>
+                    <span className={"PickWalletNone"}>You must install polkadot{"{"}.js} extension and MathWallet wallet or unlock it or wait injection</span>
             }
         </div>
     );
