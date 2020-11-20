@@ -48,8 +48,16 @@ export function PickWallet() {
         if (!walletAPI) {
             return;
         }
-        const account = await walletAPI.login();
-        setAccount(account.address);
+        const accounts = await walletAPI.login();
+        if (accounts) {
+            if (Array.isArray(accounts) && accounts.length) {
+                setAccounts(accounts.map(i => i.address));
+                setAccount(accounts[0].address);
+            } else if (!!accounts.address) {
+                setAccounts([accounts.address]);
+                setAccount(accounts.address);
+            }
+        }
     };
 
     const handleLogout = async () => {

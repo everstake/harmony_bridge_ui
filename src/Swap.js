@@ -1,5 +1,6 @@
 import React, {useContext, useEffect, useState} from "react";
 import {AppContext} from "./App";
+import {Unit} from "@harmony-js/utils/dist/transformers";
 
 const config = require("./config");
 const Bridge = require("./contracts/Bridge");
@@ -14,7 +15,7 @@ export function Swap({assetID}) {
     const [balanceCoin, setBalanceCoin] = useState("");
 
     const updateCoinBalance = async () => {
-        if (!walletAPI || !walletAPI.blockchain|| !account) {
+        if (!walletAPI || !walletAPI.blockchain || !account) {
             return
         }
         const balance = await walletAPI.blockchain.getBalance({
@@ -79,7 +80,7 @@ export function Swap({assetID}) {
             from: account,
             gasLimit: 8000000,
             gasPrice: 1000000000,
-            value: inputValue
+            value: (new Unit(inputValue).asWei()).toWeiString(),
         });
 
         refreshInfo().catch();
@@ -105,10 +106,10 @@ export function Swap({assetID}) {
             <input type="text" value={receiver} onChange={handleReceiver}/>
 
             <span>Amount:</span>
-            <input type="text" value={inputValue} onChange={onChangeTransferValue}/>
+            <input type="number" value={inputValue} onChange={onChangeTransferValue}/>
 
             <button onClick={assetID === "Harmony" ? handleTransferCoin : handleTransferToken}>
-                {assetID === "Harmony" ? "Transfer coin" :  "Transfer token"}
+                {assetID === "Harmony" ? "Transfer coin" : "Transfer token"}
             </button>
         </div>
     </div>
