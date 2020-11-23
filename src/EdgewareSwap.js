@@ -104,7 +104,7 @@ export function EdgewareSwap({assetID}) {
         }
 
         // const gasLimit = 5000n * 1000000n;
-        await bridge.tx.transferCoin(inputValue, -1, account).signAndSend(account, (result) => {
+        await bridge.tx.transferCoin(inputValue, -1, receiver).signAndSend(account, (result) => {
             if (result.status.isInBlock) {
                 console.log('in a block');
             } else if (result.status.isFinalized) {
