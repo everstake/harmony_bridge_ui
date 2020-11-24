@@ -97,6 +97,7 @@ function App() {
                     walletType === "MathWallet Harmony" || walletType === "Harmony" ? getHarmonySwapBlock() : getEdgewareSwapBlock()
                 }
             </div>
+            <div className={"test-sass"}></div>
         </AppContext.Provider>
     );
 }
