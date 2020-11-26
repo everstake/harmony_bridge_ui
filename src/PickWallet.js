@@ -70,20 +70,26 @@ export function PickWallet() {
 
     const content = () => {
         return (<div className={"PickWalletContent"}>
-            <span>Pick wallet:</span>
-            <Select value={currentWallet} onChange={handleChange}>
-                {wallets.map(v => <Option key={v} value={v}>{v}</Option>)}
-            </Select>
+            <div>
+                <div className="pick-selector">
+                <strong>Pick wallet: </strong>
+                <Select value={currentWallet} onChange={handleChange}>
+                    {wallets.map(v => <Option key={v} value={v}>{v}</Option>)}
+                </Select>
+                </div>
+            </div>
+            <div className="login-buttons">
             {
                 !account ?
-                    <button onClick={handleLogin}>
+                    <button className="btn login"  onClick={handleLogin}>
                         Login
                     </button>
                     :
-                    <button onClick={handleLogout}>
+                    <button className="btn logout" onClick={handleLogout}>
                         Logout
                     </button>
             }
+            </div>
         </div>)
     };
 

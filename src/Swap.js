@@ -2,6 +2,9 @@ import React, {useContext, useEffect, useState} from "react";
 import {AppContext} from "./App";
 import {Unit} from "@harmony-js/utils/dist/transformers";
 
+import { Input } from 'antd';
+import { ForwardOutlined, ReloadOutlined } from '@ant-design/icons';
+
 const config = require("./config");
 const Bridge = require("./contracts/Bridge");
 const Token = require("./contracts/EdgewareToken");
@@ -86,27 +89,25 @@ export function Swap({assetID}) {
         refreshInfo().catch();
     };
 
-    return <div className={"SwapContainer"}>
-        <span>Harmony >>> Edgeware</span>
-        <br/>
+    return <div className="App-form">
+        <h4>Harmony <ForwardOutlined /> Edgeware</h4>
 
         <button onClick={refreshInfo}>
-            update info
+            <ReloadOutlined /> update info
         </button>
         <br/>
 
-        <span>Token {assetName}({assetID})</span>
-        <br/>
+        <h5>Token {assetName} ({assetID})</h5>
 
-        {assetID === "Harmony" ? <span>token balance {balanceCoin}</span> : <span>token balance {balance}</span>}
-        <br/>
-
+        {assetID === "Harmony" ? <div class="balance">token balance {balanceCoin}</div> : <div class="balance">token balance {balance}</div>}
+  
         <div className={"SwapParams"}>
-            <span>Receiver:</span>
-            <input type="text" value={receiver} onChange={handleReceiver}/>
+            <Input addonBefore="Receiver:" defaultValue={receiver} onChange={handleReceiver} />
+            {/* <input type="text" value={receiver} onChange={handleReceiver}/> */}
 
-            <span>Amount:</span>
-            <input type="number" value={inputValue} onChange={onChangeTransferValue}/>
+            {/* <span>Amount:</span> */}
+            <Input addonBefore="Amount:" type="number"  defaultValue={inputValue} onChange={onChangeTransferValue}/>
+            {/* <input type="number" value={inputValue} onChange={onChangeTransferValue}/> */}
 
             <button onClick={assetID === "Harmony" ? handleTransferCoin : handleTransferToken}>
                 {assetID === "Harmony" ? "Transfer coin" : "Transfer token"}

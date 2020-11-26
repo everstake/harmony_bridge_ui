@@ -3,6 +3,9 @@ import {AppContext} from "./App";
 import {ContractPromise} from "@polkadot/api-contract";
 import {web3FromAddress} from "@polkadot/extension-dapp";
 
+import { Input } from 'antd';
+import { ForwardOutlined, ReloadOutlined } from '@ant-design/icons';
+
 const config = require("./config");
 const Bridge = require("./contractsEdgeware/edgeware_bridge_metadata");
 const Token = require("./contractsEdgeware/erc20token_metadata");
@@ -117,31 +120,32 @@ export function EdgewareSwap({assetID}) {
         refreshInfo().catch();
     };
 
-    return <div className={"SwapContainer-Edgeware"}>
-        <span>Edgeware >>> Harmony</span>
-        <br/>
+    return <div className="App-form">
+        {/* <div className="container"> */}
+        <h4>Edgeware <ForwardOutlined /> Harmony</h4>
 
         <button onClick={refreshInfo}>
-            update info
+            <ReloadOutlined /> update info
         </button>
-        <br/>
 
-        <span>Token {assetName}({assetID})</span>
-        <br/>
+        <h5>{assetName} ({assetID})</h5>
 
-        {assetID === "Edgeware" ? <span>coin balance {balanceCoin}</span> : <span>token balance {balance}</span>}
-        <br/>
+        {assetID === "Edgeware" ? <div class="balance">coin balance {balanceCoin}</div> : <div class="balance">token balance {balance}</div>}
 
         <div className={"SwapParams"}>
-            <span>Receiver:</span>
-            <input type="text" value={receiver} onChange={handleReceiver}/>
+            {/* <span>Receiver:</span> */}
+            <Input addonBefore="Receiver:" defaultValue={receiver} onChange={handleReceiver} />
+            {/* <input type="text" value={receiver} onChange={handleReceiver}/> */}
 
-            <span>Amount:</span>
-            <input type="number" value={inputValue} onChange={onChangeTransferValue}/>
+            <Input addonBefore="Amount:" type="number"  defaultValue={inputValue} onChange={onChangeTransferValue}/>
+
+            {/* <span>Amount:</span>
+            <input type="number" value={inputValue} onChange={onChangeTransferValue}/> */}
 
             <button onClick={assetID === "Edgeware" ? handleTransferCoin : handleTransferToken}>
                 {assetID === "Edgeware" ? "Transfer coin" : "Transfer token"}
             </button>
         </div>
+        {/* </div> */}
     </div>
 }

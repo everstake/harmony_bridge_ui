@@ -1,6 +1,6 @@
 {
   "endpoint": "wss://ws.s0.b.hmny.io",
-  "edgeware-endpoint": "ws://127.0.0.1:9944",
+  "edgeware-endpoint": "wss://beresheet1.edgewa.re",
   "shard": 0,
   "bridge": "one1ay49rh8zhz0rhdd2set59gsnaacdvxvqauzfd8",
   "tokens": ["one1ay49rh8zhz0rhdd2set59gsnaacdvxvqauzfd8"],
