@@ -28,6 +28,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "postinstall": "node ./patch.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -51,7 +52,7 @@
     ]
   },
   "devDependencies": {
-    "@polkadot/api": "^2.6.1",
+    "@polkadot/api": "2.10.1",
     "react-widgets": "^4.6.1"
   }
 }
