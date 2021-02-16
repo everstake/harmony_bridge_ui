@@ -5,6 +5,9 @@ import {Swap} from "./Swap";
 import {Select} from "antd";
 import {EdgewareSwap} from "./EdgewareSwap";
 
+import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
+import './styles/App.scss';
+
 const {Option} = Select;
 
 export const AppContext = createContext({});
@@ -52,10 +55,27 @@ function App() {
     const getHarmonySwapBlock = () => {
         return account ? (
             <div>
-                <span>Pick asset:</span>
-                <Select value={currentAsset} onChange={setCurrentAsset}>
-                    {assets.map(v => <Option key={v} value={v}>{v}</Option>)}
-                </Select>
+                <div className="pick-head">
+                    <div>
+                    {
+                                accounts.length === 1 ?
+                                    <span><strong>Address:</strong> {account}</span>
+                                    :
+                                    <div>
+                                        <span>Account</span>
+                                        <Select value={account} onChange={setAccount}>
+                                            {accounts.map(v => <Option key={v} value={v}>{v}</Option>)}
+                                        </Select>
+                                    </div>
+                    }
+                    </div>
+                    <div className="pick-asset">
+                        <strong>Pick asset: </strong>
+                        <Select value={currentAsset} onChange={setCurrentAsset}>
+                            {assets.map(v => <Option key={v} value={v}>{v}</Option>)}
+                        </Select>
+                    </div>
+                </div>
                 <Swap assetID={currentAsset}/>
             </div>
         ) : ""
@@ -64,10 +84,27 @@ function App() {
     const getEdgewareSwapBlock = () => {
         return account ? (
             <div>
-                <span>Pick asset:</span>
-                <Select value={currentAsset} onChange={setCurrentAsset}>
-                    {assets.map(v => <Option key={v} value={v}>{v}</Option>)}
-                </Select>
+                <div className="pick-head">
+                    <div>
+                    {
+                            accounts.length === 1 ?
+                                <span><strong>Address:</strong> {account}</span>
+                                :
+                                <div>
+                                    <span>Account</span>
+                                    <Select value={account} onChange={setAccount}>
+                                        {accounts.map(v => <Option key={v} value={v}>{v}</Option>)}
+                                    </Select>
+                                </div>
+                    }
+                    </div>
+                    <div className="pick-asset">
+                        <strong>Pick asset: </strong>
+                        <Select value={currentAsset} onChange={setCurrentAsset}>
+                            {assets.map(v => <Option key={v} value={v}>{v}</Option>)}
+                        </Select>
+                    </div>
+                </div>
                 <EdgewareSwap assetID={currentAsset}></EdgewareSwap>
             </div>
         ) : ""
@@ -75,28 +112,20 @@ function App() {
 
     return (
         <AppContext.Provider value={contextValues}>
-            <div className="App" style={{backgroundColor: "#9a9", height: "100vh"}}>
+            <div className="App">
                 <div className="Header">
-                    <PickWallet/>
+                    <div className="container">
+                        <PickWallet/>
+                    
+                    {/* <br/> */}
+
                     {
-                        accounts.length === 1 ?
-                            <span>Address {account}</span>
-                            :
-                            <div>
-                                <span>Account</span>
-                                <Select value={account} onChange={setAccount}>
-                                    {accounts.map(v => <Option key={v} value={v}>{v}</Option>)}
-                                </Select>
-                            </div>
+                        walletType === "MathWallet Harmony" || walletType === "Harmony" ? getHarmonySwapBlock() : getEdgewareSwapBlock()
                     }
-
+                    </div>
                 </div>
-                <br/>
-
-                {
-                    walletType === "MathWallet Harmony" || walletType === "Harmony" ? getHarmonySwapBlock() : getEdgewareSwapBlock()
-                }
             </div>
+            <div className={"test-sass"}></div>
         </AppContext.Provider>
     );
 }
