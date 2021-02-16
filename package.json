@@ -28,7 +28,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "postinstall": "node ./patch.js",
+    "postinstall": " cd node_modules/@polkadot/api && npm i && cd ../../../ &&  node ./patch.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
