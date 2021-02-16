@@ -99,7 +99,7 @@ export function PickWallet() {
                 wallets.length ?
                     content()
                     :
-                    <span className={"PickWalletNone"}>You must install polkadot{"{"}.js} extension and MathWallet wallet or unlock it or wait injection</span>
+                    <span className={"PickWalletNone"}>You must install polkadot{"{"}.js{"}"}extension and MathWallet wallet or unlock it or wait injection</span>
             }
         </div>
     );
