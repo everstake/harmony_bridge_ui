@@ -109,6 +109,7 @@ export function Swap({assetID}) {
             <Input addonBefore="Amount:" type="number"  defaultValue={inputValue} onChange={onChangeTransferValue}/>
             {/* <input type="number" value={inputValue} onChange={onChangeTransferValue}/> */}
 
+
             <button onClick={assetID === "Harmony" ? handleTransferCoin : handleTransferToken}>
                 {assetID === "Harmony" ? "Transfer coin" : "Transfer token"}
             </button>
