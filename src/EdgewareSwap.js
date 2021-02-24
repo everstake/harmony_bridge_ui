@@ -106,8 +106,11 @@ export function EdgewareSwap({assetID}) {
             return;
         }
 
+        console.log('inputValue, -1, receiver :>> ', inputValue, -1, receiver);
+
         // const gasLimit = 5000n * 1000000n;
-        await bridge.tx.transferCoin(inputValue, -1, receiver).signAndSend(account, (result) => {
+        const res = await bridge.tx.transferCoin(inputValue, -1, receiver).signAndSend(account, (result) => {
+        console.log("🚀 ~ file: EdgewareSwap.js ~ line 113 ~ res ~ result", result)
             if (result.status.isInBlock) {
                 console.log('in a block');
             } else if (result.status.isFinalized) {
@@ -116,6 +119,7 @@ export function EdgewareSwap({assetID}) {
         }).catch((e) => {
             console.error(e);
         });
+        console.log("🚀 ~ file: EdgewareSwap.js ~ line 121 ~ res ~ res", res)
 
         refreshInfo().catch();
     };

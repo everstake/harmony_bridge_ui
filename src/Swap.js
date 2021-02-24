@@ -64,12 +64,14 @@ export function Swap({assetID}) {
         if (!walletAPI) {
             return;
         }
+        console.log('receiver, inputValue, assetID :>> ', receiver, inputValue, assetID, account);
         const bridge = await walletAPI.contracts.createContract(Bridge.abi, config.bridge);
-        await bridge.methods.transferToken(receiver, inputValue, assetID).send({
+        const res = await bridge.methods.transferToken(receiver, inputValue, assetID).send({
             from: account,
             gasLimit: 8000000,
             gasPrice: 1000000000
         });
+        console.log("🚀 ~ file: Swap.js ~ line 74 ~ res ~ res", res)
 
         refreshInfo().catch();
     };
@@ -78,14 +80,18 @@ export function Swap({assetID}) {
         if (!walletAPI) {
             return;
         }
+        console.log('inputValue :>> ', inputValue);
+        console.log('(new Unit(inputValue).asWei()).toWeiString() :>> ',receiver, (new Unit(inputValue).asWei()).toWeiString(), account);
         const bridge = await walletAPI.contracts.createContract(Bridge.abi, config.bridge);
-        await bridge.methods.transferCoin(receiver).send({
+        bridge.methods.transferCoin(receiver).send({
             from: account,
             gasLimit: 8000000,
             gasPrice: 1000000000,
             value: (new Unit(inputValue).asWei()).toWeiString(),
-        });
-
+        }).then(res => {
+            console.log('res1 :>>', res);
+        })
+            
         refreshInfo().catch();
     };
 

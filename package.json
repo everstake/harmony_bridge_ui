@@ -9,7 +9,7 @@
     "@harmony-js/utils": "^0.1.55",
     "@polkadot/api-contract": "2.5.1",
     "@polkadot/apps": "^0.39.1",
-    "@polkadot/extension-dapp": "^0.34.1",
+    "@polkadot/extension-dapp": "^0.37.1",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -27,9 +27,9 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "postinstall": " cd node_modules/@polkadot/api && npm i && cd ../../../ &&  node ./patch.js",
+    "start": "react-app-rewired start",
     "build": "react-scripts build",
+    "postinstall": " cd node_modules/@polkadot/api && npm i && cd ../../../ &&  node ./patch.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -52,7 +52,8 @@
     ]
   },
   "devDependencies": {
-    "@polkadot/api": "2.10.1",
+    "@polkadot/api": "^3.10.2",
+    "react-app-rewired": "^2.1.8",
     "react-widgets": "^4.6.1"
   }
 }
