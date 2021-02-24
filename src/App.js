@@ -8,7 +8,6 @@ import {EdgewareSwap} from "./EdgewareSwap";
 import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
 import './styles/App.scss';
 
-
 const {Option} = Select;
 
 export const AppContext = createContext({});
