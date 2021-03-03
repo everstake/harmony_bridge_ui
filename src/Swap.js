@@ -51,6 +51,7 @@ export function Swap({ assetID }) {
             const nameResult = await token.methods.name().call();
             setAssetName(nameResult);
         }
+        await updateCoinBalance();
     };
 
     useEffect(() => {
@@ -75,7 +76,6 @@ export function Swap({ assetID }) {
             gasLimit: 8000000,
             gasPrice: 1000000000
         });
-        console.log("🚀 ~ file: Swap.js ~ line 74 ~ res ~ res", res)
 
         refreshInfo().catch();
     };
