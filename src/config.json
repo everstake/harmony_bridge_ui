@@ -1,9 +1,9 @@
 {
   "endpoint": "wss://ws.s0.b.hmny.io",
-  "edgeware-endpoint": "wss://beresheet1.edgewa.re",
+  "edgeware-endpoint": "wss://beresheet-test.everstake.one",
   "shard": 0,
-  "bridge": "one1ay49rh8zhz0rhdd2set59gsnaacdvxvqauzfd8",
-  "tokens": ["one1ay49rh8zhz0rhdd2set59gsnaacdvxvqauzfd8"],
-  "edgeware-bridge": "5Cc8qYJyZhnR5Zw54dQnhbpUzoABn8DhQevWg2ovS2mozjDn",
-  "edgeware-tokens": ["5EdYiz1daAkTMj3VjXyyc1sU4KfAg4judTk6Qh4LgmSFwTxC"]
+  "bridge": "one1w790fmgyzrn8srrawra5c222694aw44y3307kr",
+  "tokens": ["one19kegnp39ehp4shkxa53gcffrc4cgkf9mnzcfr6"],
+  "edgeware-bridge": "5Es6sA33szHwJtmseSDm29GGSgHiTaWmgavBd7wJhvMFQQda",
+  "edgeware-tokens": ["5DZ45oeKG1CiSAzLRzdW23CRB3HXdzpsLuC4CEQ9Ugm3TeKK", "5H3UmT2swNfF2CKgZ124K29GUvb7a6dkXSuKLwrWSBAa8DSb"]
 }
