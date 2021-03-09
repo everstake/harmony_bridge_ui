@@ -1,7 +1,7 @@
-import React, {useContext, useEffect, useState} from "react";
-import {AppContext} from "./App";
-import {ContractPromise} from "@polkadot/api-contract";
-import {web3FromAddress} from "@polkadot/extension-dapp";
+import React, { useContext, useEffect, useState } from "react";
+import { AppContext } from "./App";
+import { ContractPromise } from "@polkadot/api-contract";
+import { web3FromAddress } from "@polkadot/extension-dapp";
 
 import { Input } from 'antd';
 import { ForwardOutlined, ReloadOutlined } from '@ant-design/icons';
@@ -10,19 +10,19 @@ const config = require("./config");
 const Bridge = require("./contractsEdgeware/edgeware_bridge_metadata");
 const Token = require("./contractsEdgeware/erc20token_metadata");
 
-export function EdgewareSwap({assetID}) {
+export function EdgewareSwap({ assetID }) {
     const [balance, setBalance] = useState("");
-    const [receiver, setReceiver] = useState("5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty");
+    const [receiver, setReceiver] = useState("");
     const [assetName, setAssetName] = useState("");
     const [inputValue, setInputValue] = useState(0);
-    const {walletAPI, account} = useContext(AppContext);
+    const { walletAPI, account } = useContext(AppContext);
     const [balanceCoin, setBalanceCoin] = useState("");
 
     const updateCoinBalance = async () => {
-        if (!walletAPI  || !walletAPI.query|| !account) {
+        if (!walletAPI || !walletAPI.query || !account) {
             return
         }
-        const {data} = await walletAPI.query.system.account(account);
+        const { data } = await walletAPI.query.system.account(account);
         setBalanceCoin(data["free"].toString());
     };
 
@@ -44,7 +44,7 @@ export function EdgewareSwap({assetID}) {
             if (!token) {
                 return;
             }
-            const {result, output} = await token.query.balanceOf(account, 0, -1, account);
+            const { result, output } = await token.query.balanceOf(account, 0, -1, account);
             if (result.isOk) {
                 setBalance(output.toString());
             } else {
@@ -104,10 +104,10 @@ export function EdgewareSwap({assetID}) {
         const bridge = await new ContractPromise(walletAPI, Bridge, config["edgeware-bridge"]);
         if (!bridge) {
             return;
-        }
+        } 
 
         // const gasLimit = 5000n * 1000000n;
-        await bridge.tx.transferCoin(inputValue, -1, receiver).signAndSend(account, (result) => {
+        const res = await bridge.tx.transferCoin(inputValue, -1, receiver).signAndSend(account, (result) => {
             if (result.status.isInBlock) {
                 console.log('in a block');
             } else if (result.status.isFinalized) {
@@ -130,18 +130,17 @@ export function EdgewareSwap({assetID}) {
 
         <h5>{assetName} ({assetID})</h5>
 
-        {assetID === "Edgeware" ? <div class="balance">coin balance {balanceCoin}</div> : <div class="balance">token balance {balance}</div>}
+        {assetID === "Edgeware" ? <div className="balance">coin balance {balanceCoin}</div> : <div className="balance">token balance {balance}</div>}
 
         <div className={"SwapParams"}>
             {/* <span>Receiver:</span> */}
             <Input addonBefore="Receiver:" defaultValue={receiver} onChange={handleReceiver} />
             {/* <input type="text" value={receiver} onChange={handleReceiver}/> */}
 
-            <Input addonBefore="Amount:" type="number"  defaultValue={inputValue} onChange={onChangeTransferValue}/>
+            <Input addonBefore="Amount:" type="number" defaultValue={inputValue} onChange={onChangeTransferValue} />
 
             {/* <span>Amount:</span>
             <input type="number" value={inputValue} onChange={onChangeTransferValue}/> */}
-
 
             <button onClick={assetID === "Edgeware" ? handleTransferCoin : handleTransferToken}>
                 {assetID === "Edgeware" ? "Transfer coin" : "Transfer token"}
