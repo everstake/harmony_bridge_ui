@@ -1,15 +1,16 @@
-import React, {useContext, useEffect, useState} from "react";
-import {getWalletAPI, getWalletsList} from "./utils";
-import {AppContext} from "./App";
+import React, { useContext, useEffect, useState } from "react";
+import { getWalletAPI, getWalletsList } from "./utils";
+import { AppContext } from "./App";
 import 'antd/dist/antd.css';
-import {Select} from 'antd';
+import { Select } from 'antd';
+import packageJson from './../package.json';
 
-const {Option} = Select;
+const { Option } = Select;
 
 export function PickWallet() {
     const [wallets, setWallets] = useState([]);
     const [currentWallet, setCurrentWallet] = useState("");
-    const {account, walletAPI, setWalletAPI, setAccount, setAccounts, setWalletType} = useContext(AppContext);
+    const { account, walletAPI, setWalletAPI, setAccount, setAccounts, setWalletType } = useContext(AppContext);
 
     const handleChange = async (what) => {
         const walletAPI = await getWalletAPI(what);
@@ -44,6 +45,7 @@ export function PickWallet() {
         getWallets().catch();
     }, []);
 
+
     const handleLogin = async () => {
         if (!walletAPI) {
             return;
@@ -72,23 +74,24 @@ export function PickWallet() {
         return (<div className={"PickWalletContent"}>
             <div>
                 <div className="pick-selector">
-                <strong>Pick wallet: </strong>
-                <Select value={currentWallet} onChange={handleChange}>
-                    {wallets.map(v => <Option key={v} value={v}>{v}</Option>)}
-                </Select>
+                    <strong>Pick wallet version: {packageJson.version}: </strong>
+                    <Select value={currentWallet} onChange={handleChange}>
+                        {wallets.map(v => <Option key={v} value={v}>{v}</Option>)}
+                    </Select>
                 </div>
             </div>
+
             <div className="login-buttons">
-            {
-                !account ?
-                    <button className="btn login"  onClick={handleLogin}>
-                        Login
+                {
+                    !account ?
+                        <button className="btn login" onClick={handleLogin}>
+                            Login
                     </button>
-                    :
-                    <button className="btn logout" onClick={handleLogout}>
-                        Logout
+                        :
+                        <button className="btn logout" onClick={handleLogout}>
+                            Logout
                     </button>
-            }
+                }
             </div>
         </div>)
     };

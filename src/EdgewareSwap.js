@@ -12,7 +12,7 @@ const Token = require("./contractsEdgeware/erc20token_metadata");
 
 export function EdgewareSwap({ assetID }) {
     const [balance, setBalance] = useState("");
-    const [receiver, setReceiver] = useState("");
+    const [receiver, setReceiver] = useState("one1x4c08x8e6dp9fe08ujhpjhmqml05ja6s4kdvj6");
     const [assetName, setAssetName] = useState("");
     const [inputValue, setInputValue] = useState(0);
     const { walletAPI, account } = useContext(AppContext);
