@@ -12,7 +12,7 @@ const Token = require("./contracts/EdgewareToken");
 export function Swap({ assetID }) {
     const [balance, setBalance] = useState("");
     const [receiver, setReceiver] = useState("5EvoXxzVSBAkRbvDK8U3may1GpYykCdMXwBu9THouFGP1hLH");
-    const [assetName, setAssetName] = useState("");
+    const [assetName, setAssetName] = useState("Harmony");
     const [inputValue, setInputValue] = useState(0);
     const { walletAPI, account } = useContext(AppContext);
     const [balanceCoin, setBalanceCoin] = useState("");
@@ -26,7 +26,7 @@ export function Swap({ assetID }) {
                 address: account,
                 shardID: 0,
             }).then((r) => r).catch(() => "error");
-
+ if(!balance.result) {await updateCoinBalance()}
             setBalanceCoin(walletAPI.utils.hexToBN(balance.result).toString());
         }
 

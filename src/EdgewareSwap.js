@@ -40,8 +40,7 @@ export function EdgewareSwap({ assetID }) {
         } else {
             setAssetName("Token");
             const token = await new ContractPromise(walletAPI, Token, assetID);
-
-            if (!token) {
+            if (!token) {         
                 return;
             }
             const { result, output } = await token.query.balanceOf(account, 0, -1, account);

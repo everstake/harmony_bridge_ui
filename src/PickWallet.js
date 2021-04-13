@@ -73,8 +73,9 @@ export function PickWallet() {
     const content = () => {
         return (<div className={"PickWalletContent"}>
             <div>
+                <div>Bridge version:  {packageJson.version} </div>
                 <div className="pick-selector">
-                    <strong>Pick wallet version: {packageJson.version}: </strong>
+                    <strong>Pick wallet: </strong>
                     <Select value={currentWallet} onChange={handleChange}>
                         {wallets.map(v => <Option key={v} value={v}>{v}</Option>)}
                     </Select>
