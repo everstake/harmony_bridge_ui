@@ -36,7 +36,7 @@ export function PickWallet() {
         const getWallets = async () => {
             const list = getWalletsList();
             setWallets(list);
-            if (list.length) {
+            if (list.length === 2) {
                 await handleChange(list[0]);
             } else {
                 setTimeout(getWallets, 5000);
