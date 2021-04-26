@@ -1,6 +1,6 @@
 {
   "name": "harmony-bridge",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "dependencies": {
     "@harmony-js/core": "^0.1.55",
@@ -17,7 +17,7 @@
     "chalk": "^4.1.0",
     "inquirer": "^7.3.3",
     "listbox": "^0.1.6",
-    "node-sass": "4.9.4",
+    "node-sass": "^5.0.0",
     "react": "^17.0.1",
     "react-combobox": "^0.1.2",
     "react-dom": "^17.0.1",
