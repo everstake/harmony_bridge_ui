@@ -12,8 +12,9 @@ const Token = require("./contractsEdgeware/erc20token_metadata");
 
 export function EdgewareSwap({ assetID }) {
     const [balance, setBalance] = useState("");
-    const [receiver, setReceiver] = useState("one1x4c08x8e6dp9fe08ujhpjhmqml05ja6s4kdvj6");
+    const [receiver, setReceiver] = useState("");
     const [assetName, setAssetName] = useState("");
+    const [isSubmit, setIsSubmit] = useState(false);
     const [inputValue, setInputValue] = useState(0);
     const { walletAPI, account } = useContext(AppContext);
     const [balanceCoin, setBalanceCoin] = useState("");
@@ -30,16 +31,16 @@ export function EdgewareSwap({ assetID }) {
         if (!walletAPI || !account || !assetID) {
             return;
         }
-        if (assetID === "Harmony") {
+        if (assetID === "ONE") {
             return;
         }
 
-        if (assetID === "Edgeware") {
-            setAssetName("Edgeware");
+        if (assetID === "EDG") {
+            setAssetName("EDG");
             await updateCoinBalance();
         } else {
-            setAssetName("Token");
-            const token = await new ContractPromise(walletAPI, Token, assetID);
+            setAssetName("wONE");
+            const token = await new ContractPromise(walletAPI, Token, config["edgeware-tokens"][0]);
             if (!token) {         
                 return;
             }
@@ -62,10 +63,17 @@ export function EdgewareSwap({ assetID }) {
 
     const onChangeTransferValue = (event) => {
         setInputValue(event.target.value);
+        if(inputValue !== 0 || receiver !== "") {
+            setIsSubmit(true)
+        }
     };
 
     const handleTransferToken = async () => {
         if (!walletAPI) {
+            return;
+        }
+         if(inputValue === 0 || receiver === "") {
+            alert('Fill all inputs');
             return;
         }
 
@@ -78,7 +86,7 @@ export function EdgewareSwap({ assetID }) {
         }
 
         // const gasLimit = 5000n * 1000000n;
-        await bridge.tx.transferToken(0, -1, receiver, inputValue, assetID)
+        await bridge.tx.transferToken(0, -1, receiver, inputValue, config["edgeware-tokens"][0])
             .signAndSend(account, (result) => {
                 if (result.status.isInBlock) {
                     console.log('in a block');
@@ -94,6 +102,10 @@ export function EdgewareSwap({ assetID }) {
 
     const handleTransferCoin = async () => {
         if (!walletAPI) {
+            return;
+        }
+         if(inputValue === 0 || receiver === "") {
+            alert('Fill all inputs');
             return;
         }
 
@@ -127,13 +139,13 @@ export function EdgewareSwap({ assetID }) {
             <ReloadOutlined /> update info
         </button>
 
-        <h5>{assetName} ({assetID})</h5>
+        <h5>{assetName} ({assetID === "EDG" ? 'Edgeware' : 'ONE wrapped @ Edgeware'})</h5>
 
-        {assetID === "Edgeware" ? <div className="balance">coin balance {balanceCoin}</div> : <div className="balance">token balance {balance}</div>}
+        {assetID === "EDG" ? <div className="balance">coin balance {balanceCoin}</div> : <div className="balance">token balance {balance}</div>}
 
         <div className={"SwapParams"}>
             {/* <span>Receiver:</span> */}
-            <Input addonBefore="Receiver:" defaultValue={receiver} onChange={handleReceiver} />
+            <Input addonBefore="Receiver:" defaultValue={receiver} onChange={handleReceiver} placeholder="like as one1az9yrfeegnv3jc8qrwj7etlldjnah2rgrd3jqd"/>
             {/* <input type="text" value={receiver} onChange={handleReceiver}/> */}
 
             <Input addonBefore="Amount:" type="number" defaultValue={inputValue} onChange={onChangeTransferValue} />
@@ -141,8 +153,8 @@ export function EdgewareSwap({ assetID }) {
             {/* <span>Amount:</span>
             <input type="number" value={inputValue} onChange={onChangeTransferValue}/> */}
 
-            <button onClick={assetID === "Edgeware" ? handleTransferCoin : handleTransferToken}>
-                {assetID === "Edgeware" ? "Transfer coin" : "Transfer token"}
+            <button onClick={assetID === "EDG" ? handleTransferCoin : handleTransferToken} disabled={false}>
+                {assetID === "EDG" ? "Transfer coin" : "Transfer token"}
             </button>
         </div>
         {/* </div> */}

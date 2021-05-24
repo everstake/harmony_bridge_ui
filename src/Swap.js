@@ -11,9 +11,10 @@ const Token = require("./contracts/EdgewareToken");
 
 export function Swap({ assetID }) {
     const [balance, setBalance] = useState("");
-    const [receiver, setReceiver] = useState("5EvoXxzVSBAkRbvDK8U3may1GpYykCdMXwBu9THouFGP1hLH");
-    const [assetName, setAssetName] = useState("Harmony");
+    const [receiver, setReceiver] = useState("");
+    const [assetName, setAssetName] = useState("ONE");
     const [inputValue, setInputValue] = useState(0);
+    const [isSubmit, setIsSubmit] = useState(false);
     const { walletAPI, account } = useContext(AppContext);
     const [balanceCoin, setBalanceCoin] = useState("");
 
@@ -21,12 +22,12 @@ export function Swap({ assetID }) {
         if (!walletAPI || !walletAPI.blockchain || !account) {
             return
         }
-        if (assetName === "Harmony") {
+        if (assetName === "ONE") {
             const balance = await walletAPI.blockchain.getBalance({
                 address: account,
                 shardID: 0,
             }).then((r) => r).catch(() => "error");
- if(!balance.result) {await updateCoinBalance()}
+            if (!balance.result) { await updateCoinBalance() }
             setBalanceCoin(walletAPI.utils.hexToBN(balance.result).toString());
         }
 
@@ -37,19 +38,22 @@ export function Swap({ assetID }) {
 
             return;
         }
-        if (assetID === "Edgeware") {
+        if (assetID === "EDG") {
             return;
         }
 
-        if (assetID === "Harmony") {
-            setAssetName("Harmony");
+        if (assetID === "ONE") {
+            setAssetName("ONE");
             await updateCoinBalance();
         } else {
-            const token = walletAPI.contracts.createContract(Token.abi, assetID);
+            const token = walletAPI.contracts.createContract(Token.abi, config.tokens[0]);
             const balanceResult = await token.methods.balanceOf(account).call();
             setBalance(balanceResult.toString());
             const nameResult = await token.methods.name().call();
-            setAssetName(nameResult);
+            if (nameResult === 'Edgeware') {
+                setAssetName('wEDG');
+            }
+
         }
         await updateCoinBalance();
     };
@@ -64,18 +68,28 @@ export function Swap({ assetID }) {
 
     const onChangeTransferValue = (event) => {
         setInputValue(event.target.value);
+        if(inputValue === 0 || receiver === "") {
+            setIsSubmit(true)
+        }
     };
 
     const handleTransferToken = async () => {
         if (!walletAPI) {
             return;
         }
+
+        if(inputValue === 0 || receiver === "") {
+            alert('Fill all inputs');
+            return;
+        }
+
         const bridge = await walletAPI.contracts.createContract(Bridge.abi, config.bridge);
-        const res = await bridge.methods.transferToken(receiver, inputValue, assetID).send({
+        const res = await bridge.methods.transferToken(receiver, inputValue, config.tokens[0]).send({
             from: account,
             gasLimit: 8000000,
             gasPrice: 1000000000
         });
+        console.log("🚀 ~ file: Swap.js ~ line 82 ~ res ~ res", res)
 
         refreshInfo().catch();
     };
@@ -84,6 +98,12 @@ export function Swap({ assetID }) {
         if (!walletAPI) {
             return;
         }
+
+        if(inputValue === 0 || receiver === "") {
+            alert('Fill all inputs');
+            return;
+        }
+        
         const bridge = await walletAPI.contracts.createContract(Bridge.abi, config.bridge);
         bridge.methods.transferCoin(receiver).send({
             from: account,
@@ -105,20 +125,20 @@ export function Swap({ assetID }) {
         </button>
         <br />
 
-        <h5>Token {assetName} ({assetID})</h5>
+        <h5> {assetName} ({assetID === "ONE" ? 'Harmony' : 'EDG wrapped @ Harmony'})</h5>
 
-        {assetID === "Harmony" ? <div className="balance">token balance {balanceCoin}</div> : <div className="balance">token balance {balance}</div>}
+        {assetID === "ONE" ? <div className="balance">token balance {balanceCoin}</div> : <div className="balance">token balance {balance}</div>}
 
         <div className={"SwapParams"}>
-            <Input addonBefore="Receiver:" defaultValue={receiver} onChange={handleReceiver} />
+            <Input addonBefore="Receiver:" defaultValue={receiver} onChange={handleReceiver} placeholder="like as 5EvoXxzVSBAkRbvDK8U3may1GpYykCdMXwBu9THouFGP1hLH"/>
             {/* <input type="text" value={receiver} onChange={handleReceiver}/> */}
 
             {/* <span>Amount:</span> */}
             <Input addonBefore="Amount:" type="number" defaultValue={inputValue} onChange={onChangeTransferValue} />
             {/* <input type="number" value={inputValue} onChange={onChangeTransferValue}/> */}
 
-            <button onClick={assetID === "Harmony" ? handleTransferCoin : handleTransferToken}>
-                {assetID === "Harmony" ? "Transfer coin" : "Transfer token"}
+            <button onClick={assetID === "ONE" ? handleTransferCoin : handleTransferToken} disabled={isSubmit}>
+                {assetID === "ONE" ? "Transfer coin" : "Transfer token"}
             </button>
         </div>
     </div>

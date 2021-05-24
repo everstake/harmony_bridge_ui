@@ -1,9 +1,9 @@
 {
   "endpoint": "wss://ws.s0.b.hmny.io",
-  "edgeware-endpoint": "wss://beresheet-test.everstake.one",
+  "edgeware-endpoint": "wss://edgeserhii111.ddns.net",
   "shard": 0,
   "bridge": "one1w790fmgyzrn8srrawra5c222694aw44y3307kr",
-  "tokens": ["one19kegnp39ehp4shkxa53gcffrc4cgkf9mnzcfr6"],
+  "tokens": ["0x2db2898625cdc3585ec6ed228c2523c5708b24bb"],
   "edgeware-bridge": "5CV72dVQpjt5M6nmhdFrpLnXtWqiVWPeBTkB3cbNhTDhgJ9w",
   "edgeware-tokens": ["5EPE5uYxquXof2BeKxxiWgbEEczUVVMXFQ28Vfaq2M4sUzEU"]
 }

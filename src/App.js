@@ -18,7 +18,7 @@ function App() {
     const [account, setAccount] = useState(null);
     const [accounts, setAccounts] = useState([]);
     const [walletAPI, setWalletAPI] = useState(null);
-    const [currentAsset, setCurrentAsset] = useState("Harmony");
+    const [currentAsset, setCurrentAsset] = useState("ONE");
     const [walletType, setWalletType] = useState("");
     const [assets, setAssets] = useState([]);
 
@@ -30,17 +30,17 @@ function App() {
         if (walletType === "MathWallet Harmony") {
 
             setAssets([
-                "Harmony",
-                ...config.tokens,
+                "ONE",
+                "wEDG",
             ]);
-            setCurrentAsset("Harmony");
+            setCurrentAsset("ONE");
         } else {
 
             setAssets([
-                "Edgeware",
-                ...config["edgeware-tokens"],
+                "EDG",
+                "wONE",
             ]);
-            setCurrentAsset("Edgeware");
+            setCurrentAsset("EDG");
         }
     };
 
