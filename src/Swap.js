@@ -14,7 +14,7 @@ export function Swap({ assetID }) {
     const [receiver, setReceiver] = useState("");
     const [assetName, setAssetName] = useState("ONE");
     const [inputValue, setInputValue] = useState(0);
-    const [isSubmit, setIsSubmit] = useState(false);
+    const [isSubmit, setIsSubmit] = useState(true);
     const { walletAPI, account } = useContext(AppContext);
     const [balanceCoin, setBalanceCoin] = useState("");
 
@@ -35,7 +35,6 @@ export function Swap({ assetID }) {
 
     const refreshInfo = async () => {
         if (!walletAPI || !account || !assetID) {
-
             return;
         }
         if (assetID === "EDG") {
@@ -50,6 +49,7 @@ export function Swap({ assetID }) {
             const balanceResult = await token.methods.balanceOf(account).call();
             setBalance(balanceResult.toString());
             const nameResult = await token.methods.name().call();
+            setAssetName('wEDG');
             if (nameResult === 'Edgeware') {
                 setAssetName('wEDG');
             }
@@ -64,13 +64,18 @@ export function Swap({ assetID }) {
 
     const handleReceiver = (event) => {
         setReceiver(event.target.value);
+        if (inputValue && receiver) {
+            setIsSubmit(false)
+        }
+
     };
 
     const onChangeTransferValue = (event) => {
         setInputValue(event.target.value);
-        if(inputValue === 0 || receiver === "") {
-            setIsSubmit(true)
+        if (inputValue && receiver) {
+            setIsSubmit(false)
         }
+
     };
 
     const handleTransferToken = async () => {
@@ -78,7 +83,7 @@ export function Swap({ assetID }) {
             return;
         }
 
-        if(inputValue === 0 || receiver === "") {
+        if (!inputValue || receiver === "") {
             alert('Fill all inputs');
             return;
         }
@@ -88,10 +93,20 @@ export function Swap({ assetID }) {
             from: account,
             gasLimit: 8000000,
             gasPrice: 1000000000
-        });
-        console.log("🚀 ~ file: Swap.js ~ line 82 ~ res ~ res", res)
+        })
 
-        refreshInfo().catch();
+        setTimeout(() => {
+            console.log('!!!!!!!!!!!handleTransferToken :>> ');
+            setInputValue(0)
+            refreshInfo().catch();
+            window.location.reload();
+        }, 5000)
+
+
+
+
+
+
     };
 
     const handleTransferCoin = async () => {
@@ -99,22 +114,27 @@ export function Swap({ assetID }) {
             return;
         }
 
-        if(inputValue === 0 || receiver === "") {
+        if (inputValue === 0 || receiver === "") {
             alert('Fill all inputs');
             return;
         }
-        
+
+
         const bridge = await walletAPI.contracts.createContract(Bridge.abi, config.bridge);
-        bridge.methods.transferCoin(receiver).send({
+        await bridge.methods.transferCoin(receiver).send({
             from: account,
             gasLimit: 8000000,
             gasPrice: 1000000000,
             value: (new Unit(inputValue).asWei()).toWeiString(),
-        }).then(res => {
-            console.log('res1 :>>', res);
-        })
+        });
+        setTimeout(() => {
+            console.log('!!!!!!!!!!!!!handleTransferCoin :>> ');
+            setInputValue(0)
+            refreshInfo().catch();
+            window.location.reload();
+        }, 5000)
 
-        refreshInfo().catch();
+
     };
 
     return <div className="App-form">
@@ -130,7 +150,7 @@ export function Swap({ assetID }) {
         {assetID === "ONE" ? <div className="balance">token balance {balanceCoin}</div> : <div className="balance">token balance {balance}</div>}
 
         <div className={"SwapParams"}>
-            <Input addonBefore="Receiver:" defaultValue={receiver} onChange={handleReceiver} placeholder="like as 5EvoXxzVSBAkRbvDK8U3may1GpYykCdMXwBu9THouFGP1hLH"/>
+            <Input addonBefore="Receiver:" defaultValue={receiver} onChange={handleReceiver} placeholder="like as 5EvoXxzVSBAkRbvDK8U3may1GpYykCdMXwBu9THouFGP1hLH" />
             {/* <input type="text" value={receiver} onChange={handleReceiver}/> */}
 
             {/* <span>Amount:</span> */}
