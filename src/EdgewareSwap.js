@@ -164,7 +164,7 @@ export function EdgewareSwap({ assetID }) {
             {/* <span>Amount:</span>
             <input type="number" value={inputValue} onChange={onChangeTransferValue}/> */}
 
-            <button onClick={assetID === "EDG" ? handleTransferCoin : handleTransferToken} disabled={isSubmit}>
+            <button onClick={assetID === "EDG" ? handleTransferCoin : handleTransferToken} >
                 {assetID === "EDG" ? "Transfer coin" : "Transfer token"}
             </button>
         </div>

@@ -101,12 +101,6 @@ export function Swap({ assetID }) {
             refreshInfo().catch();
             window.location.reload();
         }, 5000)
-
-
-
-
-
-
     };
 
     const handleTransferCoin = async () => {
@@ -121,18 +115,25 @@ export function Swap({ assetID }) {
 
 
         const bridge = await walletAPI.contracts.createContract(Bridge.abi, config.bridge);
-        await bridge.methods.transferCoin(receiver).send({
-            from: account,
-            gasLimit: 8000000,
-            gasPrice: 1000000000,
-            value: (new Unit(inputValue).asWei()).toWeiString(),
-        });
-        setTimeout(() => {
-            console.log('!!!!!!!!!!!!!handleTransferCoin :>> ');
-            setInputValue(0)
-            refreshInfo().catch();
-            window.location.reload();
-        }, 5000)
+        try {
+            await bridge.methods.transferCoin(receiver).send({
+                from: account,
+                gasLimit: 8000000,
+                gasPrice: 1000000000,
+                value: (new Unit(inputValue).asWei()).toWeiString(),
+            }) 
+           
+        } catch (err) {
+            console.log('err :>> ', err);
+        } finally {
+            // setTimeout(() => {
+            //     console.log('!!!!!!!!!!!!!handleTransferCoin :>> ');
+            //     setInputValue(0)
+            //     refreshInfo().catch();
+            //     window.location.reload();
+            // }, 5000)
+        }
+        
 
 
     };
