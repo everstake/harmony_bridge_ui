@@ -1,5 +1,6 @@
 import { HarmonyExtension } from "@harmony-js/core";
 import { Messenger, Provider } from "@harmony-js/network";
+import { spec } from '@edgeware/node-types';
 import {
     isWeb3Injected,
     web3Accounts,
@@ -48,7 +49,7 @@ export async function getWalletAPI(what) {
 
     if (wallet === "polkadot{.js} extension") {
         const provider = new WsProvider(config["edgeware-endpoint"]);
-        const api = await ApiPromise.create({ provider });
+        const api = await ApiPromise.create({ provider, ...spec });
 
         hmyEx = api;
 

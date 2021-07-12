@@ -11,7 +11,7 @@ try {
             const keysTypes = Object.keys(types)
             if (keysTypes.includes('BlockNumber')) {
               const newItems = {
-                BlockWeights: 'u32', ChainId: 'u32', ConsumedWeight: 'u32', DeletedContract: 'u32', DepositNonce: 'u32', ExitReason: 'u32', ProposalVotes: 'u32', Receipt: 'u32', ResourceId: 'u32', Transaction: 'u32', TransactionStatus: 'u32'
+                BlockWeights: 'u32', ChainId: 'u32', ConsumedWeight: 'u32', DeletedContract: 'u32', DepositNonce: 'u32', ExitReason: 'u32', ProposalVotes: 'u32', Receipt: 'u32', ResourceId: 'u32', Transaction: 'u32', TransactionStatus: 'u32', CurrencyIdOf: 'u32'
               }
               const newTypes = { ...types, ...newItems };
               return this.register(newTypes);

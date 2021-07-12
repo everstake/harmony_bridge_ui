@@ -93,6 +93,7 @@ export function EdgewareSwap({ assetID }) {
         console.log('inputValue :>> ', inputValue);
         await bridge.tx.transferToken(0, -1, receiver, inputValue, config["edgeware-tokens"][0])
             .signAndSend(account, (result) => {
+                console.log("🚀 ~ file: EdgewareSwap.js ~ line 96 ~ .signAndSend ~ result", result);
                 if (result.status.isInBlock) {
                     console.log('in a block');
                     
@@ -126,6 +127,7 @@ export function EdgewareSwap({ assetID }) {
 
         // const gasLimit = 5000n * 1000000n;
         const res = await bridge.tx.transferCoin(inputValue, -1, receiver).signAndSend(account, (result) => {
+        console.log("🚀 ~ file: EdgewareSwap.js ~ line 130 ~ res ~ result", result)
             if (result.status.isInBlock) {
                 console.log('in a block');
                 refreshInfo().catch();
