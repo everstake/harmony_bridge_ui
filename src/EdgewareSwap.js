@@ -2,6 +2,11 @@ import React, { useContext, useEffect, useState } from "react";
 import { AppContext } from "./App";
 import { ContractPromise } from "@polkadot/api-contract";
 import { web3FromAddress } from "@polkadot/extension-dapp";
+import { Abi } from '@polkadot/api-contract';
+import {
+    stringToU8a,
+    u8aToString
+  }  from '@polkadot/util';
 
 import { Input } from 'antd';
 import { ForwardOutlined, ReloadOutlined } from '@ant-design/icons';
@@ -88,24 +93,51 @@ export function EdgewareSwap({ assetID }) {
             return;
         }
 
-        // const gasLimit = 5000n * 1000000n;
-        console.log('receiver :>> ', receiver);
-        console.log('inputValue :>> ', inputValue);
+        const gasLimit = 5000n * 1000000n;
         await bridge.tx.transferToken(0, -1, receiver, inputValue, config["edgeware-tokens"][0])
-            .signAndSend(account, (result) => {
-                console.log("🚀 ~ file: EdgewareSwap.js ~ line 96 ~ .signAndSend ~ result", result);
-                if (result.status.isInBlock) {
-                    console.log('in a block');
-                    
-                    setInputValue(0);
-                } else if (result.status.isFinalized) {
-                    console.log('finalized');
+            .signAndSend(account, ({ status, events, dispatchError }) => 
+            {
+           
+                if (dispatchError) {
+                    if (dispatchError.isModule) {
+                        // for module errors, we have the section indexed, lookup
+                        const decoded = walletAPI.registry.findMetaError(dispatchError.asModule);
+                        const { documentation, name, section } = decoded;
+
+                        console.log(`${section}.${name}: ${documentation.join(' ')}`);
+                    } else {
+                        // Other, CannotLookup, BadOrigin, no extra info
+                        console.log(dispatchError.toString());
+                    }
                 }
+                if (status.isInBlock || status.isFinalized) {
+                    events
+                        // find/filter for failed events
+                        .filter(({ event }) =>
+                        {
+                            return walletAPI.events.system.ExtrinsicFailed.is(event)}
+                        )
+                        // we know that data for system.ExtrinsicFailed is
+                        // (DispatchError, DispatchInfo)
+                        .forEach(({ event: { data: [error, info] } }) => {
+                            if (error.isModule) {
+                                // for module errors, we have the section indexed, lookup
+                                const decoded = walletAPI.registry.findMetaError(error.asModule);
+                                const { documentation, method, section } = decoded;
+
+                                console.log(`${section}.${method}: ${documentation.join(' ')}`);
+                            } else {
+                                // Other, CannotLookup, BadOrigin, no extra info
+                                console.log(error.toString());
+                            }
+                        });
+                }               
+            
             }).catch((e) => {
                 console.error(e);
             });
 
-            await refreshInfo().catch();
+        await refreshInfo().catch();
     };
 
     const handleTransferCoin = async () => {
@@ -127,7 +159,7 @@ export function EdgewareSwap({ assetID }) {
 
         // const gasLimit = 5000n * 1000000n;
         const res = await bridge.tx.transferCoin(inputValue, -1, receiver).signAndSend(account, (result) => {
-        console.log("🚀 ~ file: EdgewareSwap.js ~ line 130 ~ res ~ result", result)
+            console.log("🚀 ~ file: EdgewareSwap.js ~ line 130 ~ res ~ result", result)
             if (result.status.isInBlock) {
                 console.log('in a block');
                 refreshInfo().catch();

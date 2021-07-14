@@ -49,7 +49,7 @@ export async function getWalletAPI(what) {
 
     if (wallet === "polkadot{.js} extension") {
         const provider = new WsProvider(config["edgeware-endpoint"]);
-        const api = await ApiPromise.create({ provider, ...spec });
+        const api = await ApiPromise.create({ provider, ...spec});
 
         hmyEx = api;
 

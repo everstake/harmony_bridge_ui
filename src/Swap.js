@@ -96,7 +96,6 @@ export function Swap({ assetID }) {
         })
 
         setTimeout(() => {
-            console.log('!!!!!!!!!!!handleTransferToken :>> ');
             setInputValue(0)
             refreshInfo().catch();
             window.location.reload();
@@ -126,12 +125,6 @@ export function Swap({ assetID }) {
         } catch (err) {
             console.log('err :>> ', err);
         } finally {
-            // setTimeout(() => {
-            //     console.log('!!!!!!!!!!!!!handleTransferCoin :>> ');
-            //     setInputValue(0)
-            //     refreshInfo().catch();
-            //     window.location.reload();
-            // }, 5000)
         }
         
 

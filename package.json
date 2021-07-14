@@ -1,6 +1,6 @@
 {
   "name": "harmony-bridge",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "private": true,
   "dependencies": {
     "@edgeware/node-types": "^3.6.1-wako",
@@ -8,8 +8,8 @@
     "@harmony-js/crypto": "^0.1.55",
     "@harmony-js/network": "latest",
     "@harmony-js/utils": "^0.1.55",
-    "@polkadot/api": "^4.17.1",
-    "@polkadot/api-contract": "4.17.1",
+    "@polkadot/api": "5.0.2-3",
+    "@polkadot/api-contract": "5.0.1",
     "@polkadot/extension-dapp": "^0.37.1",
     "@polkadot/util": "^6.11.1",
     "@testing-library/jest-dom": "^5.11.4",
@@ -30,7 +30,6 @@
   "scripts": {
     "start": "react-app-rewired start",
     "build": "react-scripts build",
-    "postinstall1": " cd node_modules/@polkadot/api && npm i && cd ../../../ &&  node ./patch.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
