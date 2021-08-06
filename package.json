@@ -1,6 +1,6 @@
 {
   "name": "harmony-bridge",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "private": true,
   "dependencies": {
     "@edgeware/node-types": "^3.6.1-wako",

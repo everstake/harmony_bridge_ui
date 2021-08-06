@@ -1,9 +1,9 @@
 {
   "endpoint": "wss://ws.s0.b.hmny.io",
-  "edgeware-endpoint": "wss://edgeserhii222.ddns.net",
+  "edgeware-endpoint": "wss://edgeserhii333.ddns.net",
   "shard": 0,
   "bridge": "one1w790fmgyzrn8srrawra5c222694aw44y3307kr",
   "tokens": ["0x2db2898625cdc3585ec6ed228c2523c5708b24bb"],
-  "edgeware-bridge": "j67N3nCqZipZdwH7oCqRqe4VUqbFK9HniGDy5gdNyrYKMFT",
-  "edgeware-tokens": ["nsaj56hJd5KgyoqAfZMENu2BPdGMV27n2L9Hq1cpMyFkEoC"]
+  "edgeware-bridge": "jAdNQKyMCXi1fvCXApAHSrqqG9uGPG6o4Vje2VRaPoHTgut",
+  "edgeware-tokens": ["n1mXS2ARYh5bZDeXheyejMMT3cKuKCAomgitzZLwpLk5mBa"]
 }
